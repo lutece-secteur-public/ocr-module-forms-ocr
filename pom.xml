@@ -52,10 +52,11 @@
 	</dependencies>
 
 	<properties>
-      <componentName>ocra2ia</componentName>
-      <jiraProjectName>MFORMSOCR</jiraProjectName>
-      <jiraComponentId>15359</jiraComponentId>
+        <componentName>forms-ocr</componentName>
+        <jiraProjectName>MFORMSOCR</jiraProjectName>
+        <jiraComponentId>15358</jiraComponentId>
     </properties>
+
     <scm>
         <connection>scm:git:https://github.com/lutece-secteur-public/ocr-module-ocra2ia-rest.git</connection>
         <developerConnection>scm:git:https://github.com/lutece-secteur-public/ocr-module-ocra2ia-rest.git</developerConnection>
