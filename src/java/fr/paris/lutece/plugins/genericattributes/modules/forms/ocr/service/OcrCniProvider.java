@@ -34,11 +34,10 @@
 package fr.paris.lutece.plugins.genericattributes.modules.forms.ocr.service;
 
 
-import java.util.List;
-
 import fr.paris.lutece.plugins.genericattributes.business.ITypeDocumentOcrProvider;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.ReferenceItem;
+import fr.paris.lutece.util.ReferenceList;
 
 
 /**
@@ -49,8 +48,8 @@ import fr.paris.lutece.util.ReferenceItem;
 public class OcrCniProvider implements ITypeDocumentOcrProvider
 {
     private static final long serialVersionUID = 6224042984367506762L;
-    private static final String PROPERTY_KEY = "genericattributes-ocr.RIB.key";
-    private static final String PROPERTY_DISPLAYED_NAME = "genericattributes-ocr.RIB.displayName";
+    private static final String PROPERTY_KEY = "genericattributes-ocr.CNI.key";
+    private static final String PROPERTY_DISPLAYED_NAME = "genericattributes-ocr.CNI.displayName";
     
     
     /**
@@ -88,18 +87,38 @@ public class OcrCniProvider implements ITypeDocumentOcrProvider
     @Override
     public String toString( )
     {
-        return "Ocr Provider";
+        return "Ocr CNI Provider";
     }
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public Object getParameter(int nKey) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+     * {@inheritDoc}
+     */
 	@Override
-	public List<String> getListField() {
-		// TODO Auto-generated method stub
-		return null;
+	public ReferenceList getListField() {
+		ReferenceList refListField = new ReferenceList( );
+		
+		refListField.addItem(0, "Nom");
+		refListField.addItem(1, "Prénom");
+		refListField.addItem(2, "Age");
+		refListField.addItem(3, "Taille");
+		
+		return refListField;
+	}
+	 
+	/**
+     * {@inheritDoc}
+     */
+	@Override
+	public ReferenceItem getFieldById(int idField) {
+		return getListField().get(idField);
 	}
 }
