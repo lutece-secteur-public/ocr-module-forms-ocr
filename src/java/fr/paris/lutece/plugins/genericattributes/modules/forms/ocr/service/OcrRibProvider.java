@@ -34,6 +34,12 @@
 package fr.paris.lutece.plugins.genericattributes.modules.forms.ocr.service;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 import fr.paris.lutece.plugins.genericattributes.business.ITypeDocumentOcrProvider;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.ReferenceItem;
@@ -50,7 +56,7 @@ public class OcrRibProvider implements ITypeDocumentOcrProvider
     private static final long serialVersionUID = 6224042984367506762L;
     private static final String PROPERTY_KEY = "genericattributes-ocr.RIB.key";
     private static final String PROPERTY_DISPLAYED_NAME = "genericattributes-ocr.RIB.displayName";
-    
+    private static final String PROPERTY_AUTHORIZED_ENTRY_TYPE = "genericattributes-ocr.RIB.authorizedEntryType";
     
     /**
      * {@inheritDoc}
@@ -121,5 +127,15 @@ public class OcrRibProvider implements ITypeDocumentOcrProvider
 	@Override
 	public ReferenceItem getFieldById(int idField) {
 		return getListField().get(idField);
+	}
+
+	/**
+     * {@inheritDoc}
+     */
+	@Override
+	public List<Integer> getAuthorizedEntryType() {
+		String strAuthorizedEntryType = AppPropertiesService.getProperty( PROPERTY_AUTHORIZED_ENTRY_TYPE );
+		Pattern pattern = Pattern.compile("-");
+		return pattern.splitAsStream(strAuthorizedEntryType).map(Integer::valueOf).collect(Collectors.toList());
 	}
 }
