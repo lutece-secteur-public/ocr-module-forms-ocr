@@ -113,10 +113,14 @@ public class OcrRibProvider implements ITypeDocumentOcrProvider
 		ReferenceList refListField = new ReferenceList( );
 		
 		//TODO récupérer la liste des champs
-		refListField.addItem(0, "Code banque");
-		refListField.addItem(1, "Nom banque");
-		refListField.addItem(2, "Iban");
-		refListField.addItem(3, "BIC");
+		refListField.addItem(0, "Rib result");
+		refListField.addItem(1, "Code Banque");
+		refListField.addItem(2, "Code Guichet");
+		refListField.addItem(3, "Account number");
+		refListField.addItem(4, "Clé RIB");
+		refListField.addItem(5, "IBAN");
+		refListField.addItem(6, "BIC");
+		refListField.addItem(7, "RIB Address");
 		
 		return refListField;
 	}

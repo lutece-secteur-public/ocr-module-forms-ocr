@@ -110,10 +110,16 @@ public class OcrCniProvider implements ITypeDocumentOcrProvider
 	public ReferenceList getListField() {
 		ReferenceList refListField = new ReferenceList( );
 		
-		refListField.addItem(0, "Nom");
-		refListField.addItem(1, "Prénom");
-		refListField.addItem(2, "Age");
-		refListField.addItem(3, "Taille");
+		refListField.addItem(0, "First Name");
+		refListField.addItem(1, "Last Name");
+		refListField.addItem(2, "Birth date");
+		refListField.addItem(3, "Place of Birth");
+		refListField.addItem(4, "Expiration date");
+		refListField.addItem(5, "isuue date");
+		refListField.addItem(6, "Gender");
+		refListField.addItem(7, "Nationality");
+		refListField.addItem(8, "id number");
+		refListField.addItem(9, "Address");
 		
 		return refListField;
 	}
