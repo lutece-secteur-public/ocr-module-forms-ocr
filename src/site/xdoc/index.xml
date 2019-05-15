@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>Module forms OCR</title>
+    </properties>
+    <body>
+        <section name="module-forms-ocr">
+
+            <subsection id="introduction" name="Introduction">
+                <p>
+                	This module offers the possibility to add document providers for the OCR entry.
+                </p>
+            </subsection>
+            <subsection id="configuration" name="Configuration">
+                 <p>
+                     To enable the module, the module-forms-ocr must be added in the Lutece site and enabled in the back office.
+                 </p>
+            </subsection>
+             <subsection id="design" name="Design">
+                 <p>
+                     <b>Provider</b>
+                 </p>
+                  <p>
+                     The providers have to implements the interface ITypeDocumentOcrProvider
+                  </p>
+            </subsection>
+            <subsection id="usage" name="Usage">
+                 <p>
+                 The provider are selectable on this screen : 
+                 </p>
+                 <p>
+                    <img src="images/List-provider.png" />
+                 </p>
+            </subsection>
+        </section>
+    </body>
+</document>
+
