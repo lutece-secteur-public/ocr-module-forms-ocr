@@ -35,8 +35,11 @@ package fr.paris.lutece.plugins.genericattributes.modules.forms.ocr.service;
 
 
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import org.apache.commons.fileupload.FileItem;
 
 import fr.paris.lutece.plugins.genericattributes.business.ITypeDocumentOcrProvider;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
@@ -45,9 +48,9 @@ import fr.paris.lutece.util.ReferenceList;
 
 
 /**
- * 
+ *
  * OcrProvider : provides ocr CNI support for Generic Attributes
- * 
+ *
  */
 public class OcrCniProvider implements ITypeDocumentOcrProvider
 {
@@ -55,10 +58,11 @@ public class OcrCniProvider implements ITypeDocumentOcrProvider
     private static final String PROPERTY_KEY = "genericattributes-ocr.CNI.key";
     private static final String PROPERTY_DISPLAYED_NAME = "genericattributes-ocr.CNI.displayName";
     private static final String PROPERTY_AUTHORIZED_ENTRY_TYPE = "genericattributes-ocr.CNI.authorizedEntryType";
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getKey( )
     {
         return AppPropertiesService.getProperty( PROPERTY_KEY );
@@ -67,6 +71,7 @@ public class OcrCniProvider implements ITypeDocumentOcrProvider
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getDisplayedName( )
     {
         return AppPropertiesService.getProperty( PROPERTY_DISPLAYED_NAME );
@@ -75,6 +80,7 @@ public class OcrCniProvider implements ITypeDocumentOcrProvider
     /**
      * {@inheritDoc}
      */
+    @Override
     public ReferenceItem toRefItem( )
     {
         ReferenceItem refItem = new ReferenceItem( );
@@ -97,48 +103,57 @@ public class OcrCniProvider implements ITypeDocumentOcrProvider
     /**
      * {@inheritDoc}
      */
-	@Override
-	public Object getParameter(int nKey) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Object getParameter(int nKey) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	/**
+    /**
      * {@inheritDoc}
      */
-	@Override
-	public ReferenceList getListField() {
-		ReferenceList refListField = new ReferenceList( );
-		
-		refListField.addItem(0, "First Name");
-		refListField.addItem(1, "Last Name");
-		refListField.addItem(2, "Birth date");
-		refListField.addItem(3, "Place of Birth");
-		refListField.addItem(4, "Expiration date");
-		refListField.addItem(5, "isuue date");
-		refListField.addItem(6, "Gender");
-		refListField.addItem(7, "Nationality");
-		refListField.addItem(8, "id number");
-		refListField.addItem(9, "Address");
-		
-		return refListField;
-	}
-	 
-	/**
+    @Override
+    public ReferenceList getListField() {
+        ReferenceList refListField = new ReferenceList( );
+
+        refListField.addItem(0, "First Name");
+        refListField.addItem(1, "Last Name");
+        refListField.addItem(2, "Birth date");
+        refListField.addItem(3, "Place of Birth");
+        refListField.addItem(4, "Expiration date");
+        refListField.addItem(5, "isuue date");
+        refListField.addItem(6, "Gender");
+        refListField.addItem(7, "Nationality");
+        refListField.addItem(8, "id number");
+        refListField.addItem(9, "Address");
+
+        return refListField;
+    }
+
+    /**
      * {@inheritDoc}
      */
-	@Override
-	public ReferenceItem getFieldById(int idField) {
-		return getListField().get(idField);
-	}
-	
-	/**
+    @Override
+    public ReferenceItem getFieldById(int idField) {
+        return getListField().get(idField);
+    }
+
+    /**
      * {@inheritDoc}
      */
-	@Override
-	public List<Integer> getAuthorizedEntryType() {
-		String strAuthorizedEntryType = AppPropertiesService.getProperty( PROPERTY_AUTHORIZED_ENTRY_TYPE );
-		Pattern pattern = Pattern.compile("-");
-		return pattern.splitAsStream(strAuthorizedEntryType).map(Integer::valueOf).collect(Collectors.toList());
-	}
+    @Override
+    public List<Integer> getAuthorizedEntryType() {
+        String strAuthorizedEntryType = AppPropertiesService.getProperty( PROPERTY_AUTHORIZED_ENTRY_TYPE );
+        Pattern pattern = Pattern.compile("-");
+        return pattern.splitAsStream(strAuthorizedEntryType).map(Integer::valueOf).collect(Collectors.toList());
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> processOcr( FileItem fileUploaded )
+    {
+        // No implementation
+        return null;
+    }
 }
