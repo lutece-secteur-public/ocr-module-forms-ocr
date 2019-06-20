@@ -50,15 +50,15 @@ import fr.paris.lutece.util.ReferenceList;
 
 /**
  *
- * OcrProvider : provides ocr CNI support for Generic Attributes
+ * OcrProvider : provides ocr RIB support for Generic Attributes
  *
  */
-public class OcrCniProvider implements ITypeDocumentOcrProvider
+public class OcrDriverLicenceProvider implements ITypeDocumentOcrProvider
 {
     private static final long serialVersionUID = 6224042984367506762L;
-    private static final String PROPERTY_KEY = "genericattributes-ocr.CNI.key";
-    private static final String PROPERTY_DISPLAYED_NAME = "genericattributes-ocr.CNI.displayName";
-    private static final String PROPERTY_AUTHORIZED_ENTRY_TYPE = "genericattributes-ocr.CNI.authorizedEntryType";
+    private static final String PROPERTY_KEY = "genericattributes-ocr.driver.licence.key";
+    private static final String PROPERTY_DISPLAYED_NAME = "genericattributes-ocr.driver.licence.displayName";
+    private static final String PROPERTY_AUTHORIZED_ENTRY_TYPE = "genericattributes-ocr.driver.licence.authorizedEntryType";
 
     /**
      * {@inheritDoc}
@@ -98,7 +98,7 @@ public class OcrCniProvider implements ITypeDocumentOcrProvider
     @Override
     public String toString( )
     {
-        return "Ocr CNI Provider";
+        return "Ocr RIB Provider";
     }
 
     /**
@@ -117,16 +117,12 @@ public class OcrCniProvider implements ITypeDocumentOcrProvider
     public ReferenceList getListField() {
         ReferenceList refListField = new ReferenceList( );
 
-        refListField.addItem(0, "First Name");
-        refListField.addItem(1, "Last Name");
-        refListField.addItem(2, "Birth date");
-        refListField.addItem(3, "Place of Birth");
-        refListField.addItem(4, "Expiration date");
-        refListField.addItem(5, "isuue date");
-        refListField.addItem(6, "Gender");
-        refListField.addItem(7, "Nationality");
-        refListField.addItem(8, "id number");
-        refListField.addItem(9, "Address");
+        //TODO récupérer la liste des champs
+        refListField.addItem(0, "Name");
+        refListField.addItem(1, "Expiration date");
+        refListField.addItem(2, "Creation date");
+        refListField.addItem(3, "ID number");
+        refListField.addItem(4, "MRZ lines");
 
         return refListField;
     }
@@ -148,13 +144,16 @@ public class OcrCniProvider implements ITypeDocumentOcrProvider
         Pattern pattern = Pattern.compile("-");
         return pattern.splitAsStream(strAuthorizedEntryType).map(Integer::valueOf).collect(Collectors.toList());
     }
-    
+
     /**
      * {@inheritDoc}
+     *
      */
     @Override
     public Map<String, String> processOcr( FileItem fileUploaded )
     {
     	return OcrUtils.processOcr(fileUploaded, getKey( ) );
     }
+
+    
 }
