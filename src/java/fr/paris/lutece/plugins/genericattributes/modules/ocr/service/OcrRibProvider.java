@@ -31,23 +31,21 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.genericattributes.modules.forms.ocr.service;
+package fr.paris.lutece.plugins.genericattributes.modules.ocr.service;
 
 
 import java.io.IOException;
 import java.util.Base64;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.IOUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import fr.paris.lutece.plugins.genericattributes.business.ITypeDocumentOcrProvider;
+import fr.paris.lutece.plugins.genericattributes.business.IOcrProvider;
+import fr.paris.lutece.plugins.genericattributes.modules.ocr.utils.OcrProviderUtils;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.ReferenceItem;
@@ -62,13 +60,13 @@ import net.sf.json.JSONObject;
  * OcrProvider : provides ocr RIB support for Generic Attributes
  *
  */
-public class OcrRibProvider implements ITypeDocumentOcrProvider
+public class OcrRibProvider implements IOcrProvider
 {
     private static final long serialVersionUID = 6224042984367506762L;
     private static final String PROPERTY_KEY = "genericattributes-ocr.RIB.key";
     private static final String PROPERTY_DISPLAYED_NAME = "genericattributes-ocr.RIB.displayName";
     private static final String PROPERTY_AUTHORIZED_ENTRY_TYPE = "genericattributes-ocr.RIB.authorizedEntryType";
-    private static final String PROPERTY_OCR_URL = "forms-ocr.ws.ocr.url";
+    private static final String PROPERTY_OCR_URL = "genericattributes-ocr.ws.ocr.url";
     private static final String JSON_UTF8_CONTENT_TYPE = "application/json; charset=UTF-8";
 
     /**
@@ -152,19 +150,26 @@ public class OcrRibProvider implements ITypeDocumentOcrProvider
     /**
      * {@inheritDoc}
      */
-    @Override
+  /*  @Override
     public List<Integer> getAuthorizedEntryType() {
         String strAuthorizedEntryType = AppPropertiesService.getProperty( PROPERTY_AUTHORIZED_ENTRY_TYPE );
         Pattern pattern = Pattern.compile("-");
         return pattern.splitAsStream(strAuthorizedEntryType).map(Integer::valueOf).collect(Collectors.toList());
     }
+   */ 
+    
+	@Override
+	public String getConfigHtmlCode(ReferenceList lisEntry, int nIdQuestion, String strResourceType) {
+		
+		return OcrProviderUtils.builtTempalteConfiog(lisEntry, this, nIdQuestion, strResourceType).getHtml();
+	}
 
     /**
      * {@inheritDoc}
      *
      */
     @Override
-    public Map<String, String> processOcr( FileItem fileUploaded )
+    public Map<String, String> process( FileItem fileUploaded )
     {
 
         JSONObject jsonContent = buildJsonContent( fileUploaded );
@@ -229,4 +234,12 @@ public class OcrRibProvider implements ITypeDocumentOcrProvider
         }
 
     }
+
+	@Override
+	public String getHtmlCode(int nIdTargetEntry, String strResourceType) {
+		
+		return OcrProviderUtils.builtTempalteCode(nIdTargetEntry, strResourceType).getHtml();
+	
+	}
+
 }

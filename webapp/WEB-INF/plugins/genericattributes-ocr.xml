@@ -3,7 +3,7 @@
         
     <!-- Plugin Informations -->
 	<name>genericattributes-ocr</name>
-	<class>fr.paris.lutece.plugins.genericattributes.modules.forms.ocr.service.GenericAttributesFormsOcrPlugin</class>
+	<class>fr.paris.lutece.plugins.genericattributes.modules.ocr.service.GenericattributesOcrPlugin</class>
 	<version>1.0.0-SNAPSHOT</version>
 	<description>module.genericattributes.ocr.module.description</description>
 	<documentation/>
@@ -12,7 +12,7 @@
 	<user-guide/>
 	<provider>module.genericattributes.ocr.module.provider</provider>
 	<provider-url>http://lutece.paris.fr</provider-url>
-	<icon-url>images/admin/skin/plugins/genericattributes/genericattributes.png</icon-url>
+	<icon-url>images/admin/skin/plugins/genericattributes/ocr.png</icon-url>
 	<copyright>Copyright 2001-2016 Mairie de Paris</copyright>
 	<core-version-dependency>
 		<min-core-version>4.4.0</min-core-version>
@@ -20,7 +20,7 @@
 	</core-version-dependency>
 	
 	<!-- if the plugin must have a connection pool with parameter : 1 - yes, 0 - no -->	
-	<db-pool-required>0</db-pool-required>
+	<db-pool-required>1</db-pool-required>
     <rbac-resource-types>
 	</rbac-resource-types>
     

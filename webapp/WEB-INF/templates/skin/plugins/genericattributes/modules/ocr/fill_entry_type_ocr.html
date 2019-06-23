@@ -1,0 +1,22 @@
+<script>
+$(document).ready(function(){
+	jQuery.ajax({
+		url :"jsp/site/plugins/genericattributes/modules/ocr/InitFieldMappingOcr.jsp",
+		async:false,
+		data: {id_target_entry: ${id_target_entry}, resource_type:"${resource_type}"},
+		success : function(data) { 
+			if(data != undefined){
+				console.log(data);
+				var domain;
+				data.forEach(function(idEntry){
+					console.log(idEntry);
+					$("#step-content [displaycontrol^='"+idEntry+"_'] :input").prop("disabled", true);
+				});
+			}
+		},
+		error:function (xhr, ajaxOptions, thrownError){
+			alert(thrownError);
+		}   
+	});
+});
+</script>

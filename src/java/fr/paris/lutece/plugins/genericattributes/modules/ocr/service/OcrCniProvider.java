@@ -31,17 +31,15 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.genericattributes.modules.forms.ocr.service;
+package fr.paris.lutece.plugins.genericattributes.modules.ocr.service;
 
 
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import org.apache.commons.fileupload.FileItem;
 
-import fr.paris.lutece.plugins.genericattributes.business.ITypeDocumentOcrProvider;
+import fr.paris.lutece.plugins.genericattributes.business.IOcrProvider;
+import fr.paris.lutece.plugins.genericattributes.modules.ocr.utils.OcrProviderUtils;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.ReferenceItem;
 import fr.paris.lutece.util.ReferenceList;
@@ -52,7 +50,7 @@ import fr.paris.lutece.util.ReferenceList;
  * OcrProvider : provides ocr CNI support for Generic Attributes
  *
  */
-public class OcrCniProvider implements ITypeDocumentOcrProvider
+public class OcrCniProvider implements IOcrProvider
 {
     private static final long serialVersionUID = 6224042984367506762L;
     private static final String PROPERTY_KEY = "genericattributes-ocr.CNI.key";
@@ -141,19 +139,32 @@ public class OcrCniProvider implements ITypeDocumentOcrProvider
     /**
      * {@inheritDoc}
      */
-    @Override
+   /* @Override
     public List<Integer> getAuthorizedEntryType() {
         String strAuthorizedEntryType = AppPropertiesService.getProperty( PROPERTY_AUTHORIZED_ENTRY_TYPE );
         Pattern pattern = Pattern.compile("-");
         return pattern.splitAsStream(strAuthorizedEntryType).map(Integer::valueOf).collect(Collectors.toList());
-    }
+    }*/
     /**
      * {@inheritDoc}
      */
     @Override
-    public Map<String, String> processOcr( FileItem fileUploaded )
+    public Map<String, String> process( FileItem fileUploaded  )
     {
         // No implementation
         return null;
     }
+
+
+	@Override
+	public String getConfigHtmlCode(ReferenceList lisEntry, int nIdQuestion, String strResourceType) {
+		
+		return OcrProviderUtils.builtTempalteConfiog(lisEntry, this, nIdQuestion, strResourceType).getHtml();
+	}
+
+	@Override
+	public String getHtmlCode(int nIdTargetEntry, String strResourceType) {
+		
+		return OcrProviderUtils.builtTempalteCode(nIdTargetEntry, strResourceType).getHtml();
+	}
 }

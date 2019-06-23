@@ -31,18 +31,42 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.genericattributes.modules.forms.ocr.service;
+package fr.paris.lutece.plugins.genericattributes.modules.ocr.business;
+import fr.paris.lutece.portal.service.plugin.Plugin;
 
-import fr.paris.lutece.portal.service.plugin.PluginDefaultImplementation;
-
+import java.util.List;
 
 /**
- * class GenericAttributesGisPlugin
+ * IFieldDAO Interface
  */
-public class GenericAttributesFormsOcrPlugin extends PluginDefaultImplementation
+public interface IMappingDAO
 {
+    
     /**
-     * Name of the Generic Attributes ocr plugin
+     * Insert  mapping object
+     *
+     * @param mapping the mapping
+     * @param plugin the plugin
      */
-    public static final String PLUGIN_NAME = "genericattributes-ocr";
+    void insert( Mapping mapping, Plugin plugin );
+
+   /**
+    * Remove mapping object line
+    * @param nIdTargetEntry The target entry id
+    * @param strResourceType The Resource type
+    * @param nIdEntry the Entry Id
+    * @param plugin the plugin
+    */
+    void delete( int nIdTargetEntry, String strResourceType,  int nIdEntry, Plugin plugin );
+
+   
+  /**
+   * Load object list mapped by target entry id and reource type
+   * @param nIdTargetEntry The id target entry
+   * @param strResourceType The resoruce type
+   * @param plugin the Plugin
+   * @return the list of mapping object
+   */
+    List<Mapping> loadMappingByTargetEntry( int nIdTargetEntry, String strResourceType,  Plugin plugin ) ;
+    
 }
