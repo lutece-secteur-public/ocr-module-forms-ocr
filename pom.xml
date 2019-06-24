@@ -11,10 +11,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>fr.paris.lutece.plugins</groupId>
-	<artifactId>module-forms-ocr</artifactId>
+	<artifactId>module-genericattributes-ocr</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>lutece-plugin</packaging>
-	<name>Lutece form ocr module</name>
+	<name>Lutece genericattributes ocr module</name>
 
 	<repositories>
 		<repository>
@@ -43,17 +43,11 @@
 			<version>[1.1.5-SNAPSHOT,)</version>
 			<type>lutece-plugin</type>
 		</dependency>
-		<dependency>
-            <groupId>fr.paris.lutece.plugins</groupId>
-            <artifactId>plugin-forms</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
-            <type>lutece-plugin</type>
-        </dependency>
         <dependency>
 	        <groupId>fr.paris.lutece.plugins</groupId>
 	        <artifactId>library-httpaccess</artifactId>
 	        <version>2.5.1</version>
-	        <type>lutece-plugin</type>
+	        <type>jar</type>
         </dependency>
 	</dependencies>
 
@@ -64,9 +58,9 @@
     </properties>
 
     <scm>
-        <connection>scm:git:https://github.com/lutece-secteur-public/ocr-module-ocra2ia-rest.git</connection>
-        <developerConnection>scm:git:https://github.com/lutece-secteur-public/ocr-module-ocra2ia-rest.git</developerConnection>
-        <url>https://github.com/lutece-secteur-public/ocr-module-ocra2ia-rest.git</url>
+        <connection>scm:git:https://github.com/lutece-secteur-public/ocr-module-genericattributes-ocr.git</connection>
+        <developerConnection>scm:git:https://github.com/lutece-secteur-public/ocr-module-genericattributes-ocr.git</developerConnection>
+        <url>https://github.com/lutece-secteur-public/ocr-module-genericattributes-ocr.git</url>
       <tag>HEAD</tag>
     </scm>
 </project>

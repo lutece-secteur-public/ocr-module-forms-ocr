@@ -1,0 +1,75 @@
+<#macro paramInputOcr>
+ <input name="id_target_entry" value="${id_target_entry}" type="hidden" />
+ <input id="resource_type" name="resource_type" value="${resource_type}" type="hidden" />
+ <input class="referer_url" name="referer_url" value="" type="hidden" />
+</#macro>
+<div>  
+            <@columns md=9 lg=9 xl=9>
+			<@box color='primary'>
+				<@boxHeader title='#i18n{module.genericattributes.ocr.createEntry.fileType.mapping.title}' boxTools=true>
+				</@boxHeader>
+				<@boxBody>
+					<!-- List of mapping -->
+					<table class="table">
+						<thead>
+							<tr>
+								<th>#i18n{module.genericattributes.ocr.createEntry.fileType.form.question}</th>
+								<th>#i18n{module.genericattributes.ocr.createEntry.fileType.response.WS}</th>
+								<th></th>
+							</tr>
+						</thead>
+                                         <@tform action='jsp/admin/plugins/genericattributes/modules/ocr/ModifyMappingOcr.jsp'>
+						<@paramInputOcr/>
+						 <input name="action" value="removeMapping" type="hidden" />
+
+							
+						<#list mapping_list as mapping>
+							<tr>
+							     
+							     <#list entry_list as item>
+
+							      <#if item.code = mapping.idEntry?string >
+							       <td class="col-md-6">${item.name}</td>
+							      </#if>
+							    </#list>
+							    <#list field_list as item  >
+							    <#if item.code = mapping.idFieldOcr?string >						    
+								<td class="col-md-3">${item.name}</td>
+							    </#if>
+							    </#list>
+							    <td class="col-md-3">
+                                               <@button type='submit' name='id_entry' title='#i18n{module.genericattributes.createEntry.manageField.titleDelete}' value='${mapping.idEntry}' buttonIcon='trash' size='' showTitle=false color='btn-danger' showTitleXs=false showTitleMd=false />
+
+						    	</td>
+							</tr>
+						 </#list>
+                                        </@tform>
+					</table>
+					<hr>
+					<!-- Add mapping -->
+					<@row>
+						<@tform action='jsp/admin/plugins/genericattributes/modules/ocr/ModifyMappingOcr.jsp'>
+							<@columns md=4 lg=4 xl=4>
+								<!-- Form field -->
+								<@select name='id_entry' id='id_entry' items=entry_list_filtred />
+							</@columns>
+							<@columns md=3 lg=3 xl=3>
+								<!-- OCR value -->
+								<@select name='id_field_ocr' id='id_field_ocr' items=field_list />
+							</@columns>
+
+							<input name="ocr_provider_key" value="${ocr_provider_key}" type="hidden" />
+							<@paramInputOcr/>
+							<@columns md=3 lg=3 xl=3>
+								<@button type='submit' name='action_createMapping' title='#i18n{module.genericattributes.ocr.createEntry.fileType.add.mapping}' value='apply' buttonIcon='check' size='' showTitleXs=false showTitleMd=false />
+							</@columns>
+						</@tform>
+					</@row>	
+				</@boxBody>
+			</@box>
+		</@columns>
+        </div>
+<script>
+var uri=$(location).attr('href');
+$(".referer_url").val(uri);
+</script>
