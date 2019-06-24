@@ -50,13 +50,12 @@ import fr.paris.lutece.util.ReferenceList;
  * OcrProvider : provides ocr RIB support for Generic Attributes
  *
  */
-public class OcrRibProvider implements IOcrProvider
+public class OcrTaxAssessmentProvider implements IOcrProvider
 {
-    private static final long serialVersionUID = 6224042984367506762L;
-    private static final String PROPERTY_KEY = "genericattributes-ocr.RIB.key";
-    private static final String PROPERTY_DISPLAYED_NAME = "genericattributes-ocr.RIB.displayName";
-    private static final String PROPERTY_AUTHORIZED_ENTRY_TYPE = "genericattributes-ocr.RIB.authorizedEntryType";
-
+	private static final long serialVersionUID = 1202101462528488510L;
+	private static final String PROPERTY_KEY = "genericattributes-ocr.tax.assessment.key";
+    private static final String PROPERTY_DISPLAYED_NAME = "genericattributes-ocr.tax.assessment.displayName";
+    private static final String PROPERTY_AUTHORIZED_ENTRY_TYPE = "genericattributes-ocr.tax.assessment.authorizedEntryType";
     /**
      * {@inheritDoc}
      */
@@ -95,7 +94,7 @@ public class OcrRibProvider implements IOcrProvider
     @Override
     public String toString( )
     {
-        return "Ocr RIB Provider";
+        return "Ocr tax assessment Provider";
     }
 
     /**
@@ -114,15 +113,10 @@ public class OcrRibProvider implements IOcrProvider
     public ReferenceList getListField() {
         ReferenceList refListField = new ReferenceList( );
 
-        //TODO récupérer la liste des champs
-        refListField.addItem(0, "Rib result");
-        refListField.addItem(1, "Code Banque");
-        refListField.addItem(2, "Code Guichet");
-        refListField.addItem(3, "Account number");
-        refListField.addItem(4, "Clé RIB");
-        refListField.addItem(5, "IBAN");
-        refListField.addItem(6, "BIC");
-        refListField.addItem(7, "RIB Address");
+        refListField.addItem(0, "Amount of the tax");
+        refListField.addItem(1, "Date");
+        refListField.addItem(2, "Payor's name");
+        refListField.addItem(3, "Payor's address");
 
         return refListField;
     }
@@ -164,9 +158,7 @@ public class OcrRibProvider implements IOcrProvider
     
 	@Override
 	public String getHtmlCode(int nIdTargetEntry, String strResourceType) {
-		
 		return OcrProviderUtils.builtTempalteCode(nIdTargetEntry, strResourceType).getHtml();
-	
 	}
 
 }

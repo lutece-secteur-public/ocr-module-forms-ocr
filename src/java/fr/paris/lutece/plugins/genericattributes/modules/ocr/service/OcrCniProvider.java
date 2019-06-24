@@ -151,8 +151,7 @@ public class OcrCniProvider implements IOcrProvider
     @Override
     public Map<String, String> process( FileItem fileUploaded  )
     {
-        // No implementation
-        return null;
+    	return OcrProviderUtils.process(fileUploaded, getKey( ) );
     }
 
 

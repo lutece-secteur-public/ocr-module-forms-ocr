@@ -5,6 +5,7 @@
  	 <bean id="genericattributes-ocr.OcrRibProvider"  class="fr.paris.lutece.plugins.genericattributes.modules.ocr.service.OcrRibProvider" />
  	 <bean id="genericattributes-ocr.OcrCniProvider"  class="fr.paris.lutece.plugins.genericattributes.modules.ocr.service.OcrCniProvider" />
  	 <bean id="genericattributes-ocr.mappingDAO"  class="fr.paris.lutece.plugins.genericattributes.modules.ocr.business.MappingDAO" />
- 	 
+ 	 <bean id="genericattributes-ocr.OcrDriverLicenceProvider"  class="fr.paris.lutece.plugins.genericattributes.modules.ocr.service.OcrDriverLicenceProvider" />
+ 	 <bean id="genericattributes-ocr.OcrTaxAssessmentProvider"  class="fr.paris.lutece.plugins.genericattributes.modules.ocr.service.OcrTaxAssessmentProvider" />
  </beans>
  	
