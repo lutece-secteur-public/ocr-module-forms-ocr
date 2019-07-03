@@ -37,6 +37,7 @@ package fr.paris.lutece.plugins.genericattributes.modules.ocr.service;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.fileupload.FileItem;
@@ -45,6 +46,7 @@ import org.apache.commons.io.IOUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.paris.lutece.plugins.genericattributes.business.IOcrProvider;
+import fr.paris.lutece.plugins.genericattributes.business.Response;
 import fr.paris.lutece.plugins.genericattributes.modules.ocr.utils.OcrProviderUtils;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
@@ -66,8 +68,6 @@ public class OcrRibProvider implements IOcrProvider
     private static final String PROPERTY_KEY = "genericattributes-ocr.RIB.key";
     private static final String PROPERTY_DISPLAYED_NAME = "genericattributes-ocr.RIB.displayName";
     private static final String PROPERTY_AUTHORIZED_ENTRY_TYPE = "genericattributes-ocr.RIB.authorizedEntryType";
-    private static final String PROPERTY_OCR_URL = "genericattributes-ocr.ws.ocr.url";
-    private static final String JSON_UTF8_CONTENT_TYPE = "application/json; charset=UTF-8";
 
     /**
      * {@inheritDoc}
@@ -164,76 +164,13 @@ public class OcrRibProvider implements IOcrProvider
 		return OcrProviderUtils.builtTempalteConfiog(lisEntry, this, nIdQuestion, strResourceType).getHtml();
 	}
 
-    /**
+	 /**
      * {@inheritDoc}
-     *
      */
     @Override
-    public Map<String, String> process( FileItem fileUploaded )
-    {
-
-        JSONObject jsonContent = buildJsonContent( fileUploaded );
-        if ( jsonContent == null )
-        {
-            return null;
-        }
-
-        try
-        {
-            HttpAccess httpAccess = new HttpAccess( );
-            Map<String, String> headersRequest = new HashMap<>( );
-            headersRequest.put( "Content-Type", JSON_UTF8_CONTENT_TYPE);
-            Map<String, String> headersResponse = new HashMap<>( );
-
-            String strOcrRestUrl = AppPropertiesService.getProperty( PROPERTY_OCR_URL );
-            //call WS OCR
-            String strReponse = httpAccess.doPostJSON( strOcrRestUrl, jsonContent.toString( ), headersRequest, headersResponse );
-
-            return new ObjectMapper( ).readValue( strReponse, HashMap.class );
-
-        } catch (  IOException | HttpAccessException e )
-        {
-            AppLogService.error( e.getMessage( ), e );
-            return null;
-        }
-
-    }
-
-    /**
-     * Build Json content to call OCR WS.
-     *
-     * @param fileUploaded
-     *            File upload for OCR
-     * @return Json message
-     */
-    private JSONObject buildJsonContent( FileItem fileUploaded )
-    {
-
-        if ( fileUploaded == null )
-        {
-            return null;
-        }
-
-        try
-        {
-            byte[] fileContent = IOUtils.toByteArray( fileUploaded.getInputStream( ) );
-            String strEncodedFileContent = Base64.getEncoder( ).encodeToString( fileContent );
-            String strFileExtension = fileUploaded.getContentType( ) != null ? fileUploaded.getContentType( ).split( "/" )[1]:null;
-
-            JSONObject jsonObj = new JSONObject( );
-            jsonObj.accumulate( "filecontent", strEncodedFileContent );
-            jsonObj.accumulate( "fileextension", strFileExtension );
-            jsonObj.accumulate( "documenttype", getKey( ) );
-
-            return jsonObj;
-
-        } catch ( IOException e )
-        {
-            AppLogService.error( e.getMessage( ), e );
-            return null;
-        }
-
-    }
+	public List<Response> process(FileItem fileUploaded, int nIdTargetEntry, String strResourceType) {
+    	return OcrProviderUtils.process(fileUploaded, nIdTargetEntry , strResourceType, getKey( ), getListField() );
+	}
 
 	@Override
 	public String getHtmlCode(int nIdTargetEntry, String strResourceType) {

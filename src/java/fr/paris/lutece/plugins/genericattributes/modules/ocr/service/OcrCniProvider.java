@@ -34,11 +34,13 @@
 package fr.paris.lutece.plugins.genericattributes.modules.ocr.service;
 
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.fileupload.FileItem;
 
 import fr.paris.lutece.plugins.genericattributes.business.IOcrProvider;
+import fr.paris.lutece.plugins.genericattributes.business.Response;
 import fr.paris.lutece.plugins.genericattributes.modules.ocr.utils.OcrProviderUtils;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.ReferenceItem;
@@ -145,15 +147,14 @@ public class OcrCniProvider implements IOcrProvider
         Pattern pattern = Pattern.compile("-");
         return pattern.splitAsStream(strAuthorizedEntryType).map(Integer::valueOf).collect(Collectors.toList());
     }*/
+    
     /**
      * {@inheritDoc}
      */
     @Override
-    public Map<String, String> process( FileItem fileUploaded  )
-    {
-        // No implementation
-        return null;
-    }
+	public List<Response> process(FileItem fileUploaded, int nIdTargetEntry, String strResourceType) {
+    	return OcrProviderUtils.process(fileUploaded, nIdTargetEntry , strResourceType, getKey( ), getListField() );
+	}
 
 
 	@Override

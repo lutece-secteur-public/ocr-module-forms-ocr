@@ -69,7 +69,8 @@ public final class OCRConstants
 	public static final String MARK_ID_TARGET_ENTRY= "id_target_entry";
 	public static final String MARK_RESOURCE_TYPE= "resource_type";
 
-
+	//Constant
+	public static final String CONSTANT_FILE_TYPE = "file_type";
 	
     /**
      * Default private constructor. Do not call
