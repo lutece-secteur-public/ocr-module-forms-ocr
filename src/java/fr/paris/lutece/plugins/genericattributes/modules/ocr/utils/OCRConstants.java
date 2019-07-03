@@ -69,7 +69,16 @@ public final class OCRConstants
 	public static final String MARK_ID_TARGET_ENTRY= "id_target_entry";
 	public static final String MARK_RESOURCE_TYPE= "resource_type";
 
-
+	//OCR type response
+	public static final int ENTRY_TYPE_CHECKBOX = 102;
+	public static final int ENTRY_TYPE_DATE = 104;
+	public static final int ENTRY_TYPE_RADIOBUTTON = 101;
+	public static final int ENTRY_TYPE_SELECT = 105;
+	public static final int ENTRY_TYPE_TEXT = 106;
+	public static final int ENTRY_TYPE_TEXTAREA = 107;
+	
+	//Constant
+	public static final String CONSTANT_FILE_TYPE = "file_type";
 	
     /**
      * Default private constructor. Do not call
