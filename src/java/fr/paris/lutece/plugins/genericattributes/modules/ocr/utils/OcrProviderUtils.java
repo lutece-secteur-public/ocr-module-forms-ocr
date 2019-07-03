@@ -42,6 +42,13 @@ public class OcrProviderUtils {
 	
 	private static final String PROPERTY_OCR_URL = "forms-ocr.ws.ocr.url";
     private static final String JSON_UTF8_CONTENT_TYPE = "application/json; charset=UTF-8";
+    
+    //OCR type entry
+    public static final String ENTRY_TYPE_CHECKBOX = AppPropertiesService.getProperty( "genericattributes-ocr.entry.checkbox" );
+    public static final String ENTRY_TYPE_DATE = AppPropertiesService.getProperty( "genericattributes-ocr.entry.date" );
+    public static final String ENTRY_TYPE_RADIOBUTTON = AppPropertiesService.getProperty( "genericattributes-ocr.entry.radiobutton" );
+    public static final String ENTRY_TYPE_SELECT = AppPropertiesService.getProperty( "genericattributes-ocr.entry.select" );
+    public static final String ENTRY_TYPE_TEXTAREA = AppPropertiesService.getProperty( "genericattributes-ocr.entry.textarea" );
 	
 	public static HtmlTemplate builtTempalteConfiog ( ReferenceList listEntry, IOcrProvider ocrProvider, int nIdTargetEntry, String strResourceType ){
 		
@@ -99,7 +106,6 @@ public class OcrProviderUtils {
             String strOcrRestUrl = AppPropertiesService.getProperty( PROPERTY_OCR_URL );
             //call WS OCR (Exemple of response of RIB document for mock: "{\"Rib result\":\"repRib\",\"Code Banque\":\"repCode\",\"IBAN\":\"repIban\",\"Account number\":\"repAccount\",\"Code Guichet\":\"repCode\",\"ClÃ© RIB\":\"repCle\",\"BIC\":\"repBic\"}" ) 
             String strReponse = httpAccess.doPostJSON( strOcrRestUrl, jsonContent.toString( ), headersRequest, headersResponse );
-            strReponse="{\"Rib result\":\"repRib\",\"Code Banque\":\"repCode\",\"IBAN\":\"repIban\",\"Account number\":\"repAccount\",\"Code Guichet\":\"repCode\",\"ClÃ© RIB\":\"repCle\",\"BIC\":\"repBic\"}";
             Map<String, String> ocrResponse = new ObjectMapper( ).readValue( strReponse, HashMap.class );
             
             return buildResponseFromOcrWSResponse(ocrResponse, nIdTargetEntry, strResourceType, referenceListField);
@@ -130,29 +136,26 @@ public class OcrProviderUtils {
 			Entry entry = EntryHome.findByPrimaryKey(mapping.getIdEntry());
 			
 			if(entry != null) {
-				Integer nIdType = entry.getEntryType().getIdType();
-
+				String strIdType = String.valueOf(entry.getEntryType().getIdType());
+				
 				//Create the response by entry type
-				switch(nIdType) {
-				  case OCRConstants.ENTRY_TYPE_CHECKBOX:
-					  listResponse.addAll(buildMultiFieldResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr()));
-					  	break;
-				  case OCRConstants.ENTRY_TYPE_DATE:
-					  listResponse.addAll(buildDateResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr()));
-					  	break;
-				  case OCRConstants.ENTRY_TYPE_RADIOBUTTON:
-					  listResponse.addAll(buildMultiFieldResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr()));
-					    break;
-				  case OCRConstants.ENTRY_TYPE_SELECT:
-					  listResponse.addAll(buildMultiFieldResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr()));
-					    break;
-				  case OCRConstants.ENTRY_TYPE_TEXT:
-					  listResponse.addAll(buildTextResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr()));
-					    break;
-				  case OCRConstants.ENTRY_TYPE_TEXTAREA:
-					  listResponse.addAll(buildTextAreaResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr()));
-					    break;
-				  default:
+				if(strIdType.equals(ENTRY_TYPE_CHECKBOX)) {
+					listResponse.addAll(buildMultiFieldResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr()));
+				} 
+				else if (strIdType.equals(ENTRY_TYPE_DATE)) {
+					listResponse.addAll(buildDateResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr()));
+				} 
+				else if (strIdType.equals(ENTRY_TYPE_RADIOBUTTON)) {
+					listResponse.addAll(buildMultiFieldResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr()));
+				} 
+				else if (strIdType.equals(ENTRY_TYPE_SELECT)) {
+					listResponse.addAll(buildMultiFieldResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr()));
+				} 
+				else if (strIdType.equals(ENTRY_TYPE_TEXTAREA)) {
+					listResponse.addAll(buildTextAreaResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr()));
+				} 
+				else {
+					listResponse.addAll(buildTextResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr()));
 				}
 			}
 		}
