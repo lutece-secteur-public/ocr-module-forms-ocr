@@ -113,6 +113,7 @@ public class OcrProviderUtils {
 
         } catch (  IOException | HttpAccessException | IllegalArgumentException e)
         {
+        	AppLogService.error(e.getMessage() , e);
         	throw new CallOcrException(I18nService.getLocalizedString( MESSAGE_ERROR_OCR, Locale.getDefault() ), e);
         }
     }
