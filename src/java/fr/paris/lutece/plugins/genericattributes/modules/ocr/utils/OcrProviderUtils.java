@@ -18,16 +18,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.paris.lutece.plugins.genericattributes.business.Entry;
 import fr.paris.lutece.plugins.genericattributes.business.EntryHome;
 import fr.paris.lutece.plugins.genericattributes.business.Field;
-import fr.paris.lutece.plugins.genericattributes.business.FieldHome;
 import fr.paris.lutece.plugins.genericattributes.business.IOcrProvider;
-import fr.paris.lutece.plugins.genericattributes.business.OcrProviderManager;
 import fr.paris.lutece.plugins.genericattributes.business.Response;
-import fr.paris.lutece.plugins.genericattributes.business.ResponseHome;
 import fr.paris.lutece.plugins.genericattributes.modules.ocr.business.Mapping;
 import fr.paris.lutece.plugins.genericattributes.modules.ocr.business.MappingHome;
-import fr.paris.lutece.plugins.genericattributes.util.EntryTypeNumberingUtil;
-import fr.paris.lutece.plugins.genericattributes.util.GenericAttributesUtils;
+import fr.paris.lutece.plugins.genericattributes.modules.ocr.exceptions.CallOcrException;
 import fr.paris.lutece.portal.service.editor.EditorBbcodeService;
+import fr.paris.lutece.portal.service.i18n.I18nService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
@@ -49,6 +46,9 @@ public class OcrProviderUtils {
     public static final String ENTRY_TYPE_RADIOBUTTON = AppPropertiesService.getProperty( "genericattributes-ocr.entry.radiobutton" );
     public static final String ENTRY_TYPE_SELECT = AppPropertiesService.getProperty( "genericattributes-ocr.entry.select" );
     public static final String ENTRY_TYPE_TEXTAREA = AppPropertiesService.getProperty( "genericattributes-ocr.entry.textarea" );
+    
+    //Error message
+    private static String MESSAGE_ERROR_OCR = "module.genericattributes.ocr.error.callOcr";
 	
 	public static HtmlTemplate builtTempalteConfiog ( ReferenceList listEntry, IOcrProvider ocrProvider, int nIdTargetEntry, String strResourceType ){
 		
@@ -85,8 +85,9 @@ public class OcrProviderUtils {
      *
      * @param fileUploaded fileUploaded
      * @return the Ocr result
+	 * @throws CallOcrException 
      */
-	public static List<Response> process( FileItem fileUploaded, int nIdTargetEntry, String strResourceType, String fileTypeKey, ReferenceList referenceListField )
+	public static List<Response> process( FileItem fileUploaded, int nIdTargetEntry, String strResourceType, String fileTypeKey, ReferenceList referenceListField ) throws CallOcrException
     {
 		List<Response> listResponse = new ArrayList<>();
 		
@@ -110,10 +111,9 @@ public class OcrProviderUtils {
             
             return buildResponseFromOcrWSResponse(ocrResponse, nIdTargetEntry, strResourceType, referenceListField);
 
-        } catch (  IOException | HttpAccessException e )
+        } catch (  IOException | HttpAccessException | IllegalArgumentException e)
         {
-            AppLogService.error( e.getMessage( ), e );
-            return listResponse;
+        	throw new CallOcrException(I18nService.getLocalizedString( MESSAGE_ERROR_OCR, Locale.getDefault() ), e);
         }
     }
 	
