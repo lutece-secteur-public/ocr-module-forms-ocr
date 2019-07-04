@@ -18,15 +18,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.paris.lutece.plugins.genericattributes.business.Entry;
 import fr.paris.lutece.plugins.genericattributes.business.EntryHome;
 import fr.paris.lutece.plugins.genericattributes.business.Field;
-import fr.paris.lutece.plugins.genericattributes.business.FieldHome;
 import fr.paris.lutece.plugins.genericattributes.business.IOcrProvider;
-import fr.paris.lutece.plugins.genericattributes.business.OcrProviderManager;
 import fr.paris.lutece.plugins.genericattributes.business.Response;
-import fr.paris.lutece.plugins.genericattributes.business.ResponseHome;
 import fr.paris.lutece.plugins.genericattributes.modules.ocr.business.Mapping;
 import fr.paris.lutece.plugins.genericattributes.modules.ocr.business.MappingHome;
-import fr.paris.lutece.plugins.genericattributes.util.EntryTypeNumberingUtil;
-import fr.paris.lutece.plugins.genericattributes.util.GenericAttributesUtils;
+import fr.paris.lutece.plugins.genericattributes.modules.ocr.exceptions.CallOcrException;
 import fr.paris.lutece.portal.service.editor.EditorBbcodeService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppLogService;
@@ -85,8 +81,9 @@ public class OcrProviderUtils {
      *
      * @param fileUploaded fileUploaded
      * @return the Ocr result
+	 * @throws CallOcrException 
      */
-	public static List<Response> process( FileItem fileUploaded, int nIdTargetEntry, String strResourceType, String fileTypeKey, ReferenceList referenceListField )
+	public static List<Response> process( FileItem fileUploaded, int nIdTargetEntry, String strResourceType, String fileTypeKey, ReferenceList referenceListField ) throws CallOcrException
     {
 		List<Response> listResponse = new ArrayList<>();
 		
@@ -110,10 +107,9 @@ public class OcrProviderUtils {
             
             return buildResponseFromOcrWSResponse(ocrResponse, nIdTargetEntry, strResourceType, referenceListField);
 
-        } catch (  IOException | HttpAccessException e )
+        } catch (  IOException | HttpAccessException | IllegalArgumentException e)
         {
-            AppLogService.error( e.getMessage( ), e );
-            return listResponse;
+        	throw new CallOcrException("Erreur lors de l'appel de l'OCR", e);
         }
     }
 	
