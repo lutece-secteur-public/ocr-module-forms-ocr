@@ -47,6 +47,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.paris.lutece.plugins.genericattributes.business.IOcrProvider;
 import fr.paris.lutece.plugins.genericattributes.business.Response;
+import fr.paris.lutece.plugins.genericattributes.modules.ocr.exceptions.CallOcrException;
 import fr.paris.lutece.plugins.genericattributes.modules.ocr.utils.OcrProviderUtils;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
@@ -166,9 +167,10 @@ public class OcrRibProvider implements IOcrProvider
 
 	 /**
      * {@inheritDoc}
+	 * @throws CallOcrException 
      */
     @Override
-	public List<Response> process(FileItem fileUploaded, int nIdTargetEntry, String strResourceType) {
+	public List<Response> process(FileItem fileUploaded, int nIdTargetEntry, String strResourceType) throws CallOcrException {
     	return OcrProviderUtils.process(fileUploaded, nIdTargetEntry , strResourceType, getKey( ), getListField() );
 	}
 
