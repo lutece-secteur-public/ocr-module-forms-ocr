@@ -33,9 +33,12 @@
  */
 package fr.paris.lutece.plugins.genericattributes.modules.ocr.service;
 
+import fr.paris.lutece.plugins.genericattributes.modules.ocr.service.listener.OcrEntryListener;
+import fr.paris.lutece.portal.service.event.ResourceEventManager;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginDefaultImplementation;
 import fr.paris.lutece.portal.service.plugin.PluginService;
+import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 
 /**
@@ -47,6 +50,12 @@ public class GenericattributesOcrPlugin extends PluginDefaultImplementation
      * Name of the Generic Attributes ocr plugin
      */
     public static final String PLUGIN_NAME = "genericattributs-ocr";
+    
+    @Override
+    public void init( )
+    {
+    	ResourceEventManager.register( SpringContextService.getBean( OcrEntryListener.BEAN_NAME ) );
+    }
     /**
      * Get the ocr plugin
      * 
