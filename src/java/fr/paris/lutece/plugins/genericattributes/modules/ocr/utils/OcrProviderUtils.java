@@ -110,6 +110,8 @@ public class OcrProviderUtils {
             String strReponse = httpAccess.doPostJSON( strOcrRestUrl, jsonContent.toString( ), headersRequest, headersResponse );
             Map<String, String> ocrResponse = new ObjectMapper( ).readValue( strReponse, HashMap.class );
             
+	    //remove empty value
+            ocrResponse.values( ).removeIf(StringUtils::isBlank);
             if(ocrResponse.isEmpty( ) ) {
                 throw new CallOcrException(I18nService.getLocalizedString( MESSAGE_ERROR_OCR_EMPTY, Locale.getDefault() ));
             }
