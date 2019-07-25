@@ -48,7 +48,8 @@ public class OcrProviderUtils {
     public static final String ENTRY_TYPE_TEXTAREA = AppPropertiesService.getProperty( "genericattributes-ocr.entry.textarea" );
     
     //Error message
-    private static String MESSAGE_ERROR_OCR = "module.genericattributes.ocr.error.callOcr";
+    private static final String MESSAGE_ERROR_OCR = "module.genericattributes.ocr.error.callOcr";
+	private static final String MESSAGE_ERROR_OCR_EMPTY = "module.genericattributes.ocr.error.emptyOcr";
 	
 	public static HtmlTemplate builtTempalteConfiog ( ReferenceList listEntry, IOcrProvider ocrProvider, int nIdTargetEntry, String strResourceType ){
 		
@@ -109,6 +110,12 @@ public class OcrProviderUtils {
             String strReponse = httpAccess.doPostJSON( strOcrRestUrl, jsonContent.toString( ), headersRequest, headersResponse );
             Map<String, String> ocrResponse = new ObjectMapper( ).readValue( strReponse, HashMap.class );
             
+	    //remove empty value
+            ocrResponse.values( ).removeIf(StringUtils::isBlank);
+            if(ocrResponse.isEmpty( ) ) {
+                throw new CallOcrException(I18nService.getLocalizedString( MESSAGE_ERROR_OCR_EMPTY, Locale.getDefault() ));
+            }
+
             return buildResponseFromOcrWSResponse(ocrResponse, nIdTargetEntry, strResourceType, referenceListField);
 
         } catch (  IOException | HttpAccessException | IllegalArgumentException e)
