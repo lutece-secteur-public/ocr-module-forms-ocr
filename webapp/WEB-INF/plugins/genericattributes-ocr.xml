@@ -4,7 +4,7 @@
     <!-- Plugin Informations -->
 	<name>genericattributes-ocr</name>
 	<class>fr.paris.lutece.plugins.genericattributes.modules.ocr.service.GenericattributesOcrPlugin</class>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<description>module.genericattributes.ocr.module.description</description>
 	<documentation/>
 	<installation/>
