@@ -34,7 +34,6 @@
 
 package fr.paris.lutece.plugins.genericattributes.modules.ocr.utils;
 
-
 /**
  * 
  * Constants class for the plugin-form
@@ -42,36 +41,35 @@ package fr.paris.lutece.plugins.genericattributes.modules.ocr.utils;
  */
 public final class OCRConstants
 {
-	
-	
-	//Template 
-	public static final String TEMPLATE_MODIFY_MAPPING = "/admin/plugins/genericattributes/modules/ocr/modify_mapping.html";
-	public static final String TEMPLATE_FILL_ENTRY_OCR = "/skin/plugins/genericattributes/modules/ocr/fill_entry_type_ocr.html";
-	//Parameters
-	public static final String PARAMETER_ID_TARGET_ENTRY = "id_target_entry";
-	public static final String PARAMETER_ID_FIELD_OCR = "id_field_ocr";
-	public static final String PARAMETER_TYPE_DOCUMENT_KEY = "type_document_key";
-	public static final String PARAMETER_RESOURCE_TYPE = "resource_type";
-	public static final String PARAMETER_ENTRY_LIST = "entry_list";
-	public static final String PARAMETER_ENTRY_LIST_FILTRED = "entry_list_filtred";
-	public static final String PARAMETER_FIELD_LIST = "field_list";
-	public static final String PARAMETER_MAPPING_LIST = "mapping_list";
-    public static final String PARAMETER_ID_ENTRY = "id_entry";
-	public static final String PARAMETER_OCR_PROVIDER_KEY = "ocr_provider_key";
-	public static final String PARAMETER_HEADRE_REFER ="referer_url";
-	
-	//Merkers
-	public static final String MARK_ENTRY_LIST_FILTRED= "entry_list_filtred";
-	public static final String MARK_ENTRY_LIST= "entry_list";
-	public static final String MARK_FIELD_LIST= "field_list";
-	public static final String MARK_MAPPING_LIST= "mapping_list";
-	public static final String MARK_OCR_PROVIDER_KEY= "ocr_provider_key";
-	public static final String MARK_ID_TARGET_ENTRY= "id_target_entry";
-	public static final String MARK_RESOURCE_TYPE= "resource_type";
 
-	//Constant
-	public static final String CONSTANT_FILE_TYPE = "file_type";
-	
+    // Template
+    public static final String TEMPLATE_MODIFY_MAPPING = "/admin/plugins/genericattributes/modules/ocr/modify_mapping.html";
+    public static final String TEMPLATE_FILL_ENTRY_OCR = "/skin/plugins/genericattributes/modules/ocr/fill_entry_type_ocr.html";
+    // Parameters
+    public static final String PARAMETER_ID_TARGET_ENTRY = "id_target_entry";
+    public static final String PARAMETER_ID_FIELD_OCR = "id_field_ocr";
+    public static final String PARAMETER_TYPE_DOCUMENT_KEY = "type_document_key";
+    public static final String PARAMETER_RESOURCE_TYPE = "resource_type";
+    public static final String PARAMETER_ENTRY_LIST = "entry_list";
+    public static final String PARAMETER_ENTRY_LIST_FILTRED = "entry_list_filtred";
+    public static final String PARAMETER_FIELD_LIST = "field_list";
+    public static final String PARAMETER_MAPPING_LIST = "mapping_list";
+    public static final String PARAMETER_ID_ENTRY = "id_entry";
+    public static final String PARAMETER_OCR_PROVIDER_KEY = "ocr_provider_key";
+    public static final String PARAMETER_HEADRE_REFER = "referer_url";
+
+    // Merkers
+    public static final String MARK_ENTRY_LIST_FILTRED = "entry_list_filtred";
+    public static final String MARK_ENTRY_LIST = "entry_list";
+    public static final String MARK_FIELD_LIST = "field_list";
+    public static final String MARK_MAPPING_LIST = "mapping_list";
+    public static final String MARK_OCR_PROVIDER_KEY = "ocr_provider_key";
+    public static final String MARK_ID_TARGET_ENTRY = "id_target_entry";
+    public static final String MARK_RESOURCE_TYPE = "resource_type";
+
+    // Constant
+    public static final String CONSTANT_FILE_TYPE = "file_type";
+
     /**
      * Default private constructor. Do not call
      */

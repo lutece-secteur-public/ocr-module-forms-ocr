@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.genericattributes.modules.ocr.service;
 
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,7 +45,6 @@ import fr.paris.lutece.plugins.genericattributes.modules.ocr.utils.OcrProviderUt
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.ReferenceItem;
 import fr.paris.lutece.util.ReferenceList;
-
 
 /**
  *
@@ -106,7 +104,8 @@ public class OcrRibProvider implements IOcrProvider
      * {@inheritDoc}
      */
     @Override
-    public Object getParameter(int nKey) {
+    public Object getParameter( int nKey )
+    {
         // TODO Auto-generated method stub
         return null;
     }
@@ -134,40 +133,43 @@ public class OcrRibProvider implements IOcrProvider
      * {@inheritDoc}
      */
     @Override
-    public ReferenceItem getFieldById(int idField) {
-        return getListField().get(idField);
+    public ReferenceItem getFieldById( int idField )
+    {
+        return getListField( ).get( idField );
     }
 
     /**
      * {@inheritDoc}
      */
-    /*  @Override
-    public List<Integer> getAuthorizedEntryType() {
-        String strAuthorizedEntryType = AppPropertiesService.getProperty( PROPERTY_AUTHORIZED_ENTRY_TYPE );
-        Pattern pattern = Pattern.compile("-");
-        return pattern.splitAsStream(strAuthorizedEntryType).map(Integer::valueOf).collect(Collectors.toList());
-    }
+    /*
+     * @Override public List<Integer> getAuthorizedEntryType() { String strAuthorizedEntryType = AppPropertiesService.getProperty(
+     * PROPERTY_AUTHORIZED_ENTRY_TYPE ); Pattern pattern = Pattern.compile("-"); return
+     * pattern.splitAsStream(strAuthorizedEntryType).map(Integer::valueOf).collect(Collectors.toList()); }
      */
 
     @Override
-    public String getConfigHtmlCode(ReferenceList lisEntry, int nIdQuestion, String strResourceType) {
+    public String getConfigHtmlCode( ReferenceList lisEntry, int nIdQuestion, String strResourceType )
+    {
 
-        return OcrProviderUtils.builtTempalteConfiog(lisEntry, this, nIdQuestion, strResourceType).getHtml();
+        return OcrProviderUtils.builtTempalteConfiog( lisEntry, this, nIdQuestion, strResourceType ).getHtml( );
     }
 
     /**
      * {@inheritDoc}
+     * 
      * @throws CallOcrException
      */
     @Override
-    public List<Response> process(FileItem fileUploaded, int nIdTargetEntry, String strResourceType) throws CallOcrException {
-        return OcrProviderUtils.process(fileUploaded, nIdTargetEntry , strResourceType, getKey( ), getListField() );
+    public List<Response> process( FileItem fileUploaded, int nIdTargetEntry, String strResourceType ) throws CallOcrException
+    {
+        return OcrProviderUtils.process( fileUploaded, nIdTargetEntry, strResourceType, getKey( ), getListField( ) );
     }
 
     @Override
-    public String getHtmlCode(int nIdTargetEntry, String strResourceType) {
+    public String getHtmlCode( int nIdTargetEntry, String strResourceType )
+    {
 
-        return OcrProviderUtils.builtTempalteCode(nIdTargetEntry, strResourceType).getHtml();
+        return OcrProviderUtils.builtTempalteCode( nIdTargetEntry, strResourceType ).getHtml( );
 
     }
 

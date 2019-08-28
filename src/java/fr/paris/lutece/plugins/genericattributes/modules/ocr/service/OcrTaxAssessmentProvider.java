@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.genericattributes.modules.ocr.service;
 
-
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +46,6 @@ import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.ReferenceItem;
 import fr.paris.lutece.util.ReferenceList;
 
-
 /**
  *
  * OcrProvider : provides ocr CNI support for Generic Attributes
@@ -55,8 +53,8 @@ import fr.paris.lutece.util.ReferenceList;
  */
 public class OcrTaxAssessmentProvider implements IOcrProvider
 {
-	private static final long serialVersionUID = 1202101462528488510L;
-	private static final String PROPERTY_KEY = "genericattributes-ocr.tax.assessment.key";
+    private static final long serialVersionUID = 1202101462528488510L;
+    private static final String PROPERTY_KEY = "genericattributes-ocr.tax.assessment.key";
     private static final String PROPERTY_DISPLAYED_NAME = "genericattributes-ocr.tax.assessment.displayName";
     private static final String PROPERTY_AUTHORIZED_ENTRY_TYPE = "genericattributes-ocr.tax.assessment.authorizedEntryType";
 
@@ -98,14 +96,15 @@ public class OcrTaxAssessmentProvider implements IOcrProvider
     @Override
     public String toString( )
     {
-    	return "Ocr tax assessment Provider";
+        return "Ocr tax assessment Provider";
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Object getParameter(int nKey) {
+    public Object getParameter( int nKey )
+    {
         // TODO Auto-generated method stub
         return null;
     }
@@ -114,13 +113,14 @@ public class OcrTaxAssessmentProvider implements IOcrProvider
      * {@inheritDoc}
      */
     @Override
-    public ReferenceList getListField() {
+    public ReferenceList getListField( )
+    {
         ReferenceList refListField = new ReferenceList( );
 
-        refListField.addItem(0, "Amount of the tax");
-        refListField.addItem(1, "Date");
-        refListField.addItem(2, "Payor's name");
-        refListField.addItem(3, "Payor's address");
+        refListField.addItem( 0, "Amount of the tax" );
+        refListField.addItem( 1, "Date" );
+        refListField.addItem( 2, "Payor's name" );
+        refListField.addItem( 3, "Payor's address" );
 
         return refListField;
     }
@@ -129,39 +129,42 @@ public class OcrTaxAssessmentProvider implements IOcrProvider
      * {@inheritDoc}
      */
     @Override
-    public ReferenceItem getFieldById(int idField) {
-        return getListField().get(idField);
+    public ReferenceItem getFieldById( int idField )
+    {
+        return getListField( ).get( idField );
     }
 
     /**
      * {@inheritDoc}
      */
-   /* @Override
-    public List<Integer> getAuthorizedEntryType() {
-        String strAuthorizedEntryType = AppPropertiesService.getProperty( PROPERTY_AUTHORIZED_ENTRY_TYPE );
-        Pattern pattern = Pattern.compile("-");
-        return pattern.splitAsStream(strAuthorizedEntryType).map(Integer::valueOf).collect(Collectors.toList());
-    }*/
-    
+    /*
+     * @Override public List<Integer> getAuthorizedEntryType() { String strAuthorizedEntryType = AppPropertiesService.getProperty(
+     * PROPERTY_AUTHORIZED_ENTRY_TYPE ); Pattern pattern = Pattern.compile("-"); return
+     * pattern.splitAsStream(strAuthorizedEntryType).map(Integer::valueOf).collect(Collectors.toList()); }
+     */
+
     /**
      * {@inheritDoc}
-     * @throws CallOcrException 
+     * 
+     * @throws CallOcrException
      */
     @Override
-	public List<Response> process(FileItem fileUploaded, int nIdTargetEntry, String strResourceType) throws CallOcrException {
-    	return OcrProviderUtils.process(fileUploaded, nIdTargetEntry , strResourceType, getKey( ), getListField() );
-	}
+    public List<Response> process( FileItem fileUploaded, int nIdTargetEntry, String strResourceType ) throws CallOcrException
+    {
+        return OcrProviderUtils.process( fileUploaded, nIdTargetEntry, strResourceType, getKey( ), getListField( ) );
+    }
 
+    @Override
+    public String getConfigHtmlCode( ReferenceList lisEntry, int nIdQuestion, String strResourceType )
+    {
 
-	@Override
-	public String getConfigHtmlCode(ReferenceList lisEntry, int nIdQuestion, String strResourceType) {
-		
-		return OcrProviderUtils.builtTempalteConfiog(lisEntry, this, nIdQuestion, strResourceType).getHtml();
-	}
+        return OcrProviderUtils.builtTempalteConfiog( lisEntry, this, nIdQuestion, strResourceType ).getHtml( );
+    }
 
-	@Override
-	public String getHtmlCode(int nIdTargetEntry, String strResourceType) {
-		
-		return OcrProviderUtils.builtTempalteCode(nIdTargetEntry, strResourceType).getHtml();
-	}
+    @Override
+    public String getHtmlCode( int nIdTargetEntry, String strResourceType )
+    {
+
+        return OcrProviderUtils.builtTempalteCode( nIdTargetEntry, strResourceType ).getHtml( );
+    }
 }

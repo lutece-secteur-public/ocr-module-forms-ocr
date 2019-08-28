@@ -40,82 +40,94 @@ import java.io.Serializable;
  */
 public class Mapping implements Serializable
 {
-	private static final long serialVersionUID = -4198261124477108458L;
-	
-	private String _strResourceType;
+    private static final long serialVersionUID = -4198261124477108458L;
+
+    private String _strResourceType;
     private int _nIdEntry;
     private int _nIdFieldOcr;
     private int _nIdTargetEntry;
-    
+
     /**
      * Returns the ResourceType
+     * 
      * @return The ResourceType
-     */ 
-     public String getResourceType()
-     {
-         return _strResourceType;
-     }
- 
+     */
+    public String getResourceType( )
+    {
+        return _strResourceType;
+    }
+
     /**
      * Sets the ResourceType
-     * @param strResourceType The ResourceType
-     */ 
-     public void setResourceType( String strResourceType )
-     {
-         _strResourceType = strResourceType;
-     }
- 
+     * 
+     * @param strResourceType
+     *            The ResourceType
+     */
+    public void setResourceType( String strResourceType )
+    {
+        _strResourceType = strResourceType;
+    }
+
     /**
      * Returns the IdEnttry
+     * 
      * @return The IdEnttry
-     */ 
-     public int getIdEntry()
-     {
-         return _nIdEntry;
-     }
- 
+     */
+    public int getIdEntry( )
+    {
+        return _nIdEntry;
+    }
+
     /**
      * Sets the IdEnttry
-     * @param nIdEnttry The IdEnttry
-     */ 
-     public void setIdEntry( int nIdEnttry )
-     {
-         _nIdEntry = nIdEnttry;
-     }
- 
+     * 
+     * @param nIdEnttry
+     *            The IdEnttry
+     */
+    public void setIdEntry( int nIdEnttry )
+    {
+        _nIdEntry = nIdEnttry;
+    }
+
     /**
      * Returns the IdFieldOcr
+     * 
      * @return The IdFieldOcr
-     */ 
-     public int getIdFieldOcr()
-     {
-         return _nIdFieldOcr;
-     }
- 
+     */
+    public int getIdFieldOcr( )
+    {
+        return _nIdFieldOcr;
+    }
+
     /**
      * Sets the IdFieldOcr
-     * @param nIdFieldOcr The IdFieldOcr
-     */ 
-     public void setIdFieldOcr( int nIdFieldOcr )
-     {
-         _nIdFieldOcr = nIdFieldOcr;
-     }
- 
+     * 
+     * @param nIdFieldOcr
+     *            The IdFieldOcr
+     */
+    public void setIdFieldOcr( int nIdFieldOcr )
+    {
+        _nIdFieldOcr = nIdFieldOcr;
+    }
+
     /**
      * Returns the IdTargetEntry
+     * 
      * @return The IdTargetEntry
-     */ 
-     public int getIdTargetEntry()
-     {
-         return _nIdTargetEntry;
-     }
- 
+     */
+    public int getIdTargetEntry( )
+    {
+        return _nIdTargetEntry;
+    }
+
     /**
      * Sets the IdTargetEntry
-     * @param nIdTargetEntry The IdTargetEntry
-     */ 
-     public void setIdTargetEntry( int nIdTargetEntry )
-     {
-         _nIdTargetEntry = nIdTargetEntry;
-     }
+     * 
+     * @param nIdTargetEntry
+     *            The IdTargetEntry
+     */
+    public void setIdTargetEntry( int nIdTargetEntry )
+    {
+        _nIdTargetEntry = nIdTargetEntry;
+    }
 }

@@ -62,15 +62,15 @@ import fr.paris.lutece.util.url.UrlItem;
 public class ModifyMappingOcrJspBean extends MVCAdminJspBean
 {
     private static final long serialVersionUID = 8210813454305009601L;
-    
+
     // template
-    
+
     public static final String TEMPLATE_MODIFY_MAPPING = "/admin/plugins/genericattributes/modules/ocr/modify_mapping.html";
-   
+
     /**
      * Right to manage forms
      */
-    public static final String RIGHT_MAPPING_OCR_MANAGEMENT= "MAPPING_OCR_MANAGEMENT";
+    public static final String RIGHT_MAPPING_OCR_MANAGEMENT = "MAPPING_OCR_MANAGEMENT";
 
     // Views
     private static final String VIEW_MODIFY_MAPPING = "modifyMapping";
@@ -83,25 +83,23 @@ public class ModifyMappingOcrJspBean extends MVCAdminJspBean
 
     private static final String EXTENSION_APPLICATION_JSON = "application/json";
 
-
-
     @View( VIEW_MODIFY_MAPPING )
-    public String getModifyMapping( HttpServletRequest request ){
-    	
+    public String getModifyMapping( HttpServletRequest request )
+    {
+
         String strResourceType = request.getParameter( OCRConstants.PARAMETER_RESOURCE_TYPE );
         String strOcrKeyProvider = request.getParameter( OCRConstants.PARAMETER_OCR_PROVIDER_KEY );
         String strIdTargetEntry = request.getParameter( OCRConstants.PARAMETER_ID_TARGET_ENTRY );
-        
+
         int nIdTargetEntry = Integer.parseInt( strIdTargetEntry );
-        IOcrProvider provider= OcrProviderManager.getOcrProvider(strOcrKeyProvider);
-        ReferenceList listEntry= new ReferenceList();
-        
-        HtmlTemplate htmlTemplate= OcrProviderUtils.builtTempalteConfiog(listEntry, provider, nIdTargetEntry, strResourceType);
- 
-        
-    	return htmlTemplate.getHtml();
+        IOcrProvider provider = OcrProviderManager.getOcrProvider( strOcrKeyProvider );
+        ReferenceList listEntry = new ReferenceList( );
+
+        HtmlTemplate htmlTemplate = OcrProviderUtils.builtTempalteConfiog( listEntry, provider, nIdTargetEntry, strResourceType );
+
+        return htmlTemplate.getHtml( );
     }
-    
+
     /**
      * Do create mapping.
      *
@@ -112,12 +110,12 @@ public class ModifyMappingOcrJspBean extends MVCAdminJspBean
     @Action( ACTION_CREATE_MAPPING )
     public String doCreateMapping( HttpServletRequest request )
     {
-       
+
         String strIdTargetEntry = request.getParameter( OCRConstants.PARAMETER_ID_TARGET_ENTRY );
         String strIdEntry = request.getParameter( OCRConstants.PARAMETER_ID_ENTRY );
         String strIdFieldOcr = request.getParameter( OCRConstants.PARAMETER_ID_FIELD_OCR );
         String strResourceType = request.getParameter( OCRConstants.PARAMETER_RESOURCE_TYPE );
-       	String referHeader= request.getParameter(OCRConstants.PARAMETER_HEADRE_REFER);
+        String referHeader = request.getParameter( OCRConstants.PARAMETER_HEADRE_REFER );
 
         int nIdTargetEntry = Integer.parseInt( strIdTargetEntry );
         int nIdFieldOcr = Integer.parseInt( strIdFieldOcr );
@@ -126,13 +124,13 @@ public class ModifyMappingOcrJspBean extends MVCAdminJspBean
         Mapping mapping = new Mapping( );
         mapping.setIdFieldOcr( nIdFieldOcr );
         mapping.setIdTargetEntry( nIdTargetEntry );
-        mapping.setResourceType(strResourceType);
-        mapping.setIdEntry(nIdEntry);
+        mapping.setResourceType( strResourceType );
+        mapping.setIdEntry( nIdEntry );
 
         MappingHome.create( mapping );
-        
-        UrlItem url = new UrlItem(referHeader);
-        return redirect(request, url.getUrl());
+
+        UrlItem url = new UrlItem( referHeader );
+        return redirect( request, url.getUrl( ) );
     }
 
     /**
@@ -148,23 +146,21 @@ public class ModifyMappingOcrJspBean extends MVCAdminJspBean
         String strIdTargetEntry = request.getParameter( OCRConstants.PARAMETER_ID_TARGET_ENTRY );
         String strResourceType = request.getParameter( OCRConstants.PARAMETER_RESOURCE_TYPE );
         String strIdEntry = request.getParameter( OCRConstants.PARAMETER_ID_ENTRY );
-     	String referHeader= request.getParameter(OCRConstants.PARAMETER_HEADRE_REFER);
+        String referHeader = request.getParameter( OCRConstants.PARAMETER_HEADRE_REFER );
 
-        
         int nIdTargetEntry = Integer.parseInt( strIdTargetEntry );
         int nIdEntry = Integer.parseInt( strIdEntry );
-       
-        MappingHome.remove( nIdTargetEntry, strResourceType,  nIdEntry );
-  
-        UrlItem url = new UrlItem(referHeader);
-        return redirect(request, url.getUrl());
+
+        MappingHome.remove( nIdTargetEntry, strResourceType, nIdEntry );
+
+        UrlItem url = new UrlItem( referHeader );
+        return redirect( request, url.getUrl( ) );
 
     }
 
-   
-   /**
-    * init field ocr
-    */
+    /**
+     * init field ocr
+     */
     public void initFieldMappingOcr( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         response.setContentType( EXTENSION_APPLICATION_JSON );
@@ -172,8 +168,8 @@ public class ModifyMappingOcrJspBean extends MVCAdminJspBean
         String strResourceType = request.getParameter( OCRConstants.PARAMETER_RESOURCE_TYPE );
 
         int nIdTargetEntry = Integer.parseInt( strIdEntry );
-        List<Mapping> mappingList= MappingHome.loadMappingByTargetEntry(nIdTargetEntry, strResourceType);
-        List<Integer> entryList= mappingList.stream().map( c -> c.getIdEntry() ).collect( Collectors.toList() );
+        List<Mapping> mappingList = MappingHome.loadMappingByTargetEntry( nIdTargetEntry, strResourceType );
+        List<Integer> entryList = mappingList.stream( ).map( c -> c.getIdEntry( ) ).collect( Collectors.toList( ) );
         try
         {
             response.getWriter( ).print( entryList );

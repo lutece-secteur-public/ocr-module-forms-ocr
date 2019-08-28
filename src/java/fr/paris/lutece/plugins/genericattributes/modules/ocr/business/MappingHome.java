@@ -55,39 +55,46 @@ public final class MappingHome
     {
     }
 
-    
     /**
      * Creates the mapping.entry
      *
-     * @param mapping the mapping object
+     * @param mapping
+     *            the mapping object
      */
     public static void create( Mapping mapping )
     {
-         _dao.insert(mapping, getPlugin( ));
+        _dao.insert( mapping, getPlugin( ) );
     }
-    
+
     /**
      * Remove mapping object line
-     * @param nIdTargetEntry The target entry id
-     * @param strResourceType The Resource type
-     * @param nIdEntry the Entry Id
+     * 
+     * @param nIdTargetEntry
+     *            The target entry id
+     * @param strResourceType
+     *            The Resource type
+     * @param nIdEntry
+     *            the Entry Id
      */
     public static void remove( int nIdTargetEntry, String strResourceType, int nIdEntry )
     {
-    	_dao.delete(nIdTargetEntry, strResourceType, nIdEntry,  getPlugin());
+        _dao.delete( nIdTargetEntry, strResourceType, nIdEntry, getPlugin( ) );
     }
-    
+
     /**
      * Load object list mapped by target entry id and reource type
-     * @param nIdTargetEntry The id target entry
-     * @param strResourceType The resoruce type
+     * 
+     * @param nIdTargetEntry
+     *            The id target entry
+     * @param strResourceType
+     *            The resoruce type
      * @return the list of mapping object
      */
-    public static List<Mapping> loadMappingByTargetEntry(int nIdTargetEntry, String strResourceType) {
-    	return _dao.loadMappingByTargetEntry(nIdTargetEntry, strResourceType, getPlugin());
+    public static List<Mapping> loadMappingByTargetEntry( int nIdTargetEntry, String strResourceType )
+    {
+        return _dao.loadMappingByTargetEntry( nIdTargetEntry, strResourceType, getPlugin( ) );
     }
-    
-   
+
     /**
      * Get the generic attributes ocr module
      * 

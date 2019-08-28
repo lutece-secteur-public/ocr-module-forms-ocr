@@ -44,74 +44,73 @@ import fr.paris.lutece.util.sql.DAOUtil;
  */
 public final class MappingDAO implements IMappingDAO
 {
-	
-	
-	private static final String SQL_QUERY_FIND_BY_KEY = "SELECT id_target_entry,resource_type,id_entry,id_field_ocr "
+
+    private static final String SQL_QUERY_FIND_BY_KEY = "SELECT id_target_entry,resource_type,id_entry,id_field_ocr "
             + " FROM genatt_ocr_mapping_file_reading  WHERE id_target_entry = ? AND resource_type= ?";
     private static final String SQL_QUERY_INSERT = "INSERT INTO genatt_ocr_mapping_file_reading(id_target_entry,resource_type,id_entry,id_field_ocr)"
             + " VALUES(?,?,?,?)";
     private static final String SQL_QUERY_DELETE = "DELETE FROM genatt_ocr_mapping_file_reading WHERE id_target_entry = ? and resource_type = ? and id_entry = ?";
-    
 
     /**
      * {@inheritDoc}
      */
-	@Override
-	public void insert(Mapping mapping, Plugin plugin) {
-		
-		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, plugin );
-        
-		daoUtil.setInt( 1, mapping.getIdTargetEntry());
-        daoUtil.setString( 2, mapping.getResourceType( ));
-        daoUtil.setInt( 3, mapping.getIdEntry());
-        daoUtil.setInt( 4, mapping.getIdFieldOcr());
-        
+    @Override
+    public void insert( Mapping mapping, Plugin plugin )
+    {
+
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, plugin );
+
+        daoUtil.setInt( 1, mapping.getIdTargetEntry( ) );
+        daoUtil.setString( 2, mapping.getResourceType( ) );
+        daoUtil.setInt( 3, mapping.getIdEntry( ) );
+        daoUtil.setInt( 4, mapping.getIdFieldOcr( ) );
+
         daoUtil.executeUpdate( );
-        daoUtil.close();
+        daoUtil.close( );
 
-	}
+    }
 
-	/**
+    /**
      * {@inheritDoc}
      */
-	@Override
-	public void delete(int nIdTargetEntry, String strResourceType, int nIdEntry, Plugin plugin) {
-		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
+    @Override
+    public void delete( int nIdTargetEntry, String strResourceType, int nIdEntry, Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
         daoUtil.setInt( 1, nIdTargetEntry );
         daoUtil.setString( 2, strResourceType );
         daoUtil.setInt( 3, nIdEntry );
         daoUtil.executeUpdate( );
         daoUtil.close( );
-	}
+    }
 
-	
-	/**
+    /**
      * {@inheritDoc}
      */
-	@Override
-	public List<Mapping> loadMappingByTargetEntry( int nIdTargetEntry, String strResourceType,  Plugin plugin ) {
-		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_FIND_BY_KEY, plugin );
+    @Override
+    public List<Mapping> loadMappingByTargetEntry( int nIdTargetEntry, String strResourceType, Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_FIND_BY_KEY, plugin );
         daoUtil.setInt( 1, nIdTargetEntry );
         daoUtil.setString( 2, strResourceType );
         daoUtil.executeQuery( );
 
-        List<Mapping> questionMappedList = new ArrayList<>();
+        List<Mapping> questionMappedList = new ArrayList<>( );
 
         while ( daoUtil.next( ) )
         {
-        	Mapping mapping = new Mapping( );
-        	mapping.setIdTargetEntry( daoUtil.getInt( 1 ) );
-        	mapping.setResourceType( daoUtil.getString( 2 ) );
-        	mapping.setIdEntry( daoUtil.getInt( 3 ) );
-        	mapping.setIdFieldOcr( daoUtil.getInt( 4 ) );
+            Mapping mapping = new Mapping( );
+            mapping.setIdTargetEntry( daoUtil.getInt( 1 ) );
+            mapping.setResourceType( daoUtil.getString( 2 ) );
+            mapping.setIdEntry( daoUtil.getInt( 3 ) );
+            mapping.setIdFieldOcr( daoUtil.getInt( 4 ) );
 
-        	questionMappedList.add( mapping );
+            questionMappedList.add( mapping );
         }
 
         daoUtil.close( );
 
         return questionMappedList;
-	}
-    
-	
+    }
+
 }

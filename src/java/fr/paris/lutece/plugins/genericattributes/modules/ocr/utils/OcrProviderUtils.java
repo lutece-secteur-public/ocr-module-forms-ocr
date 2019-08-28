@@ -35,225 +35,266 @@ import fr.paris.lutece.util.httpaccess.HttpAccess;
 import fr.paris.lutece.util.httpaccess.HttpAccessException;
 import net.sf.json.JSONObject;
 
-public class OcrProviderUtils {
-	
-	private static final String PROPERTY_OCR_URL = "forms-ocr.ws.ocr.url";
+public class OcrProviderUtils
+{
+
+    private static final String PROPERTY_OCR_URL = "forms-ocr.ws.ocr.url";
     private static final String JSON_UTF8_CONTENT_TYPE = "application/json; charset=UTF-8";
-    
-    //OCR type entry
+
+    // OCR type entry
     public static final String ENTRY_TYPE_CHECKBOX = AppPropertiesService.getProperty( "genericattributes-ocr.entry.checkbox" );
     public static final String ENTRY_TYPE_DATE = AppPropertiesService.getProperty( "genericattributes-ocr.entry.date" );
     public static final String ENTRY_TYPE_RADIOBUTTON = AppPropertiesService.getProperty( "genericattributes-ocr.entry.radiobutton" );
     public static final String ENTRY_TYPE_SELECT = AppPropertiesService.getProperty( "genericattributes-ocr.entry.select" );
     public static final String ENTRY_TYPE_TEXTAREA = AppPropertiesService.getProperty( "genericattributes-ocr.entry.textarea" );
-    
-    //Error message
-    private static final String MESSAGE_ERROR_OCR = "module.genericattributes.ocr.error.callOcr";
-	private static final String MESSAGE_ERROR_OCR_EMPTY = "module.genericattributes.ocr.error.emptyOcr";
-	
-	public static HtmlTemplate builtTempalteConfiog ( ReferenceList listEntry, IOcrProvider ocrProvider, int nIdTargetEntry, String strResourceType ){
-		
-		 Map<String, Object> model = new HashMap<>();		 
-		 ReferenceList listEntryFiltred= new ReferenceList();
-		 listEntryFiltred.addAll(listEntry);
-		 List<Mapping> listMapping= MappingHome.loadMappingByTargetEntry(nIdTargetEntry, strResourceType);
-		 
-		 listEntryFiltred.removeIf(p-> listMapping.stream().anyMatch(ma -> p.getCode().equals(String.valueOf(ma.getIdEntry()))));
-				 
-		 model.put(OCRConstants.MARK_ENTRY_LIST_FILTRED, listEntryFiltred);
-		 model.put(OCRConstants.MARK_ENTRY_LIST, listEntry);
-		 model.put(OCRConstants.MARK_FIELD_LIST, ocrProvider.getListField() );
-		 model.put(OCRConstants.MARK_MAPPING_LIST, listMapping );
-		 model.put(OCRConstants.MARK_OCR_PROVIDER_KEY, ocrProvider.getKey());
-		 model.put(OCRConstants.MARK_ID_TARGET_ENTRY, nIdTargetEntry);
-		 model.put(OCRConstants.MARK_RESOURCE_TYPE, strResourceType);
-		 
-		 return AppTemplateService.getTemplate(OCRConstants.TEMPLATE_MODIFY_MAPPING, null, model);
-	}
 
-	
-	public static HtmlTemplate builtTempalteCode( int nIdTargetEntry, String strResourceType ){
-		
-		 Map<String, Object> model = new HashMap<>();
-		 
-		 model.put(OCRConstants.MARK_ID_TARGET_ENTRY, nIdTargetEntry);
-		 model.put(OCRConstants.MARK_RESOURCE_TYPE, strResourceType);		 
-		 return AppTemplateService.getTemplate(OCRConstants.TEMPLATE_FILL_ENTRY_OCR, null, model);
-	}
-	
-	/**
+    // Error message
+    private static final String MESSAGE_ERROR_OCR = "module.genericattributes.ocr.error.callOcr";
+    private static final String MESSAGE_ERROR_OCR_EMPTY = "module.genericattributes.ocr.error.emptyOcr";
+
+    public static HtmlTemplate builtTempalteConfiog( ReferenceList listEntry, IOcrProvider ocrProvider, int nIdTargetEntry, String strResourceType )
+    {
+
+        Map<String, Object> model = new HashMap<>( );
+        ReferenceList listEntryFiltred = new ReferenceList( );
+        listEntryFiltred.addAll( listEntry );
+        List<Mapping> listMapping = MappingHome.loadMappingByTargetEntry( nIdTargetEntry, strResourceType );
+
+        listEntryFiltred.removeIf( p -> listMapping.stream( ).anyMatch( ma -> p.getCode( ).equals( String.valueOf( ma.getIdEntry( ) ) ) ) );
+
+        model.put( OCRConstants.MARK_ENTRY_LIST_FILTRED, listEntryFiltred );
+        model.put( OCRConstants.MARK_ENTRY_LIST, listEntry );
+        model.put( OCRConstants.MARK_FIELD_LIST, ocrProvider.getListField( ) );
+        model.put( OCRConstants.MARK_MAPPING_LIST, listMapping );
+        model.put( OCRConstants.MARK_OCR_PROVIDER_KEY, ocrProvider.getKey( ) );
+        model.put( OCRConstants.MARK_ID_TARGET_ENTRY, nIdTargetEntry );
+        model.put( OCRConstants.MARK_RESOURCE_TYPE, strResourceType );
+
+        return AppTemplateService.getTemplate( OCRConstants.TEMPLATE_MODIFY_MAPPING, null, model );
+    }
+
+    public static HtmlTemplate builtTempalteCode( int nIdTargetEntry, String strResourceType )
+    {
+
+        Map<String, Object> model = new HashMap<>( );
+
+        model.put( OCRConstants.MARK_ID_TARGET_ENTRY, nIdTargetEntry );
+        model.put( OCRConstants.MARK_RESOURCE_TYPE, strResourceType );
+        return AppTemplateService.getTemplate( OCRConstants.TEMPLATE_FILL_ENTRY_OCR, null, model );
+    }
+
+    /**
      * Call WS OCR with the uploaded file.
      *
-     * @param fileUploaded fileUploaded
+     * @param fileUploaded
+     *            fileUploaded
      * @return the Ocr result
-	 * @throws CallOcrException 
+     * @throws CallOcrException
      */
-	public static List<Response> process( FileItem fileUploaded, int nIdTargetEntry, String strResourceType, String fileTypeKey, ReferenceList referenceListField ) throws CallOcrException
+    public static List<Response> process( FileItem fileUploaded, int nIdTargetEntry, String strResourceType, String fileTypeKey,
+            ReferenceList referenceListField ) throws CallOcrException
     {
-		List<Response> listResponse = new ArrayList<>();
-		
+        List<Response> listResponse = new ArrayList<>( );
+
         JSONObject jsonContent = buildJsonContent( fileUploaded, fileTypeKey );
         if ( jsonContent == null )
         {
             return listResponse;
         }
- 
+
         try
         {
             HttpAccess httpAccess = new HttpAccess( );
             Map<String, String> headersRequest = new HashMap<>( );
-            headersRequest.put( "Content-Type", JSON_UTF8_CONTENT_TYPE);
+            headersRequest.put( "Content-Type", JSON_UTF8_CONTENT_TYPE );
             Map<String, String> headersResponse = new HashMap<>( );
 
             String strOcrRestUrl = AppPropertiesService.getProperty( PROPERTY_OCR_URL );
-            //call WS OCR (Exemple of response of RIB document for mock: "{\"Rib result\":\"repRib\",\"Code Banque\":\"repCode\",\"IBAN\":\"repIban\",\"Account number\":\"repAccount\",\"Code Guichet\":\"repCode\",\"ClÃ© RIB\":\"repCle\",\"BIC\":\"repBic\"}" ) 
+            // call WS OCR (Exemple of response of RIB document for mock:
+            // "{\"Rib result\":\"repRib\",\"Code Banque\":\"repCode\",\"IBAN\":\"repIban\",\"Account number\":\"repAccount\",\"Code Guichet\":\"repCode\",\"ClÃ© RIB\":\"repCle\",\"BIC\":\"repBic\"}"
+            // )
             String strReponse = httpAccess.doPostJSON( strOcrRestUrl, jsonContent.toString( ), headersRequest, headersResponse );
             Map<String, String> ocrResponse = new ObjectMapper( ).readValue( strReponse, HashMap.class );
-            
-	    //remove empty value
-            ocrResponse.values( ).removeIf(StringUtils::isBlank);
-            if(ocrResponse.isEmpty( ) ) {
-                throw new CallOcrException(I18nService.getLocalizedString( MESSAGE_ERROR_OCR_EMPTY, Locale.getDefault() ));
+
+            // remove empty value
+            ocrResponse.values( ).removeIf( StringUtils::isBlank );
+            if ( ocrResponse.isEmpty( ) )
+            {
+                throw new CallOcrException( I18nService.getLocalizedString( MESSAGE_ERROR_OCR_EMPTY, Locale.getDefault( ) ) );
             }
 
-            return buildResponseFromOcrWSResponse(ocrResponse, nIdTargetEntry, strResourceType, referenceListField);
+            return buildResponseFromOcrWSResponse( ocrResponse, nIdTargetEntry, strResourceType, referenceListField );
 
-        } catch (  IOException | HttpAccessException | IllegalArgumentException e)
+        }
+        catch( IOException | HttpAccessException | IllegalArgumentException e )
         {
-        	AppLogService.error(e.getMessage() , e);
-        	throw new CallOcrException(I18nService.getLocalizedString( MESSAGE_ERROR_OCR, Locale.getDefault() ), e);
+            AppLogService.error( e.getMessage( ), e );
+            throw new CallOcrException( I18nService.getLocalizedString( MESSAGE_ERROR_OCR, Locale.getDefault( ) ), e );
         }
     }
-	
-	/**
-	 * Builds the responses list from ocr WS response.
-	 *
-	 * @param ocrResponse the ocr response
-	 * @param nIdTargetEntry the n id target entry
-	 * @param strResourceType the str resource type
-	 * @return the list
-	 */
-	private static List<Response> buildResponseFromOcrWSResponse( Map<String, String> ocrResponse, int nIdTargetEntry, String strResourceType, ReferenceList referenceListField ) {
-		// Get the mapping list from the entry
-		List<Mapping> mappingList = MappingHome.loadMappingByTargetEntry(nIdTargetEntry, strResourceType);
-		
-		List<Response> listResponse = new ArrayList<>();
-		
-		for( Mapping mapping : mappingList ) {
-			//Get the entry of the mapping, to have the type, then the responses
-			Entry entry = EntryHome.findByPrimaryKey(mapping.getIdEntry());
-			
-			if(entry != null) {
-				String strIdType = String.valueOf(entry.getEntryType().getIdType());
-				
-				//Create the response by entry type
-				if(strIdType.equals(ENTRY_TYPE_CHECKBOX)) {
-					listResponse.addAll(buildMultiFieldResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr()));
-				} 
-				else if (strIdType.equals(ENTRY_TYPE_DATE)) {
-					listResponse.addAll(buildDateResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr()));
-				} 
-				else if (strIdType.equals(ENTRY_TYPE_RADIOBUTTON)) {
-					listResponse.addAll(buildMultiFieldResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr()));
-				} 
-				else if (strIdType.equals(ENTRY_TYPE_SELECT)) {
-					listResponse.addAll(buildMultiFieldResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr()));
-				} 
-				else if (strIdType.equals(ENTRY_TYPE_TEXTAREA)) {
-					listResponse.addAll(buildTextAreaResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr()));
-				} 
-				else {
-					listResponse.addAll(buildTextResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr()));
-				}
-			}
-		}
-		
-		return listResponse;
-	}
-	
-	/**
-	 * Builds the text response.
-	 *
-	 * @param ocrResponse the ocr response
-	 * @param entry the entry
-	 * @param referenceListField the reference list field
-	 * @param mappingFieldOcr the mapping field ocr
-	 * @return the list
-	 */
-	private static List<Response> buildTextResponse( Map<String, String> ocrResponse, Entry entry, ReferenceList referenceListField, int mappingFieldOcr) {
-		List<Response> listResponse = new ArrayList<>();
-		Response response = new Response( );
-        
-		response.setEntry( entry );
-        response.setResponseValue( ocrResponse.get(referenceListField.get(mappingFieldOcr).getName() ) );
-        response.setToStringValueResponse(response.getResponseValue());
-        listResponse.add(response);
-        
+
+    /**
+     * Builds the responses list from ocr WS response.
+     *
+     * @param ocrResponse
+     *            the ocr response
+     * @param nIdTargetEntry
+     *            the n id target entry
+     * @param strResourceType
+     *            the str resource type
+     * @return the list
+     */
+    private static List<Response> buildResponseFromOcrWSResponse( Map<String, String> ocrResponse, int nIdTargetEntry, String strResourceType,
+            ReferenceList referenceListField )
+    {
+        // Get the mapping list from the entry
+        List<Mapping> mappingList = MappingHome.loadMappingByTargetEntry( nIdTargetEntry, strResourceType );
+
+        List<Response> listResponse = new ArrayList<>( );
+
+        for ( Mapping mapping : mappingList )
+        {
+            // Get the entry of the mapping, to have the type, then the responses
+            Entry entry = EntryHome.findByPrimaryKey( mapping.getIdEntry( ) );
+
+            if ( entry != null )
+            {
+                String strIdType = String.valueOf( entry.getEntryType( ).getIdType( ) );
+
+                // Create the response by entry type
+                if ( strIdType.equals( ENTRY_TYPE_CHECKBOX ) )
+                {
+                    listResponse.addAll( buildMultiFieldResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr( ) ) );
+                }
+                else
+                    if ( strIdType.equals( ENTRY_TYPE_DATE ) )
+                    {
+                        listResponse.addAll( buildDateResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr( ) ) );
+                    }
+                    else
+                        if ( strIdType.equals( ENTRY_TYPE_RADIOBUTTON ) )
+                        {
+                            listResponse.addAll( buildMultiFieldResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr( ) ) );
+                        }
+                        else
+                            if ( strIdType.equals( ENTRY_TYPE_SELECT ) )
+                            {
+                                listResponse.addAll( buildMultiFieldResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr( ) ) );
+                            }
+                            else
+                                if ( strIdType.equals( ENTRY_TYPE_TEXTAREA ) )
+                                {
+                                    listResponse.addAll( buildTextAreaResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr( ) ) );
+                                }
+                                else
+                                {
+                                    listResponse.addAll( buildTextResponse( ocrResponse, entry, referenceListField, mapping.getIdFieldOcr( ) ) );
+                                }
+            }
+        }
+
         return listResponse;
-	}
-	
-	/**
-	 * Builds the text area response.
-	 *
-	 * @param ocrResponse the ocr response
-	 * @param entry the entry
-	 * @param referenceListField the reference list field
-	 * @param mappingFieldOcr the mapping field ocr
-	 * @return the list
-	 */
-	private static List<Response> buildTextAreaResponse( Map<String, String> ocrResponse, Entry entry, ReferenceList referenceListField, int mappingFieldOcr) {
-		List<Response> listResponse = new ArrayList<>();
-		Response response = new Response( );
-        
-		response.setEntry( entry );
-		
-		String responseValue = ocrResponse.get(referenceListField.get(mappingFieldOcr).getName() );
-		
-		if(entry.isFieldInLine( )) {
-			response.setResponseValue( EditorBbcodeService.getInstance( ).parse(responseValue) );
+    }
+
+    /**
+     * Builds the text response.
+     *
+     * @param ocrResponse
+     *            the ocr response
+     * @param entry
+     *            the entry
+     * @param referenceListField
+     *            the reference list field
+     * @param mappingFieldOcr
+     *            the mapping field ocr
+     * @return the list
+     */
+    private static List<Response> buildTextResponse( Map<String, String> ocrResponse, Entry entry, ReferenceList referenceListField, int mappingFieldOcr )
+    {
+        List<Response> listResponse = new ArrayList<>( );
+        Response response = new Response( );
+
+        response.setEntry( entry );
+        response.setResponseValue( ocrResponse.get( referenceListField.get( mappingFieldOcr ).getName( ) ) );
+        response.setToStringValueResponse( response.getResponseValue( ) );
+        listResponse.add( response );
+
+        return listResponse;
+    }
+
+    /**
+     * Builds the text area response.
+     *
+     * @param ocrResponse
+     *            the ocr response
+     * @param entry
+     *            the entry
+     * @param referenceListField
+     *            the reference list field
+     * @param mappingFieldOcr
+     *            the mapping field ocr
+     * @return the list
+     */
+    private static List<Response> buildTextAreaResponse( Map<String, String> ocrResponse, Entry entry, ReferenceList referenceListField, int mappingFieldOcr )
+    {
+        List<Response> listResponse = new ArrayList<>( );
+        Response response = new Response( );
+
+        response.setEntry( entry );
+
+        String responseValue = ocrResponse.get( referenceListField.get( mappingFieldOcr ).getName( ) );
+
+        if ( entry.isFieldInLine( ) )
+        {
+            response.setResponseValue( EditorBbcodeService.getInstance( ).parse( responseValue ) );
         }
         else
         {
             response.setResponseValue( responseValue );
         }
-		
-		if ( StringUtils.isNotBlank( response.getResponseValue( ) ) && entry.isFieldInLine( ) )
+
+        if ( StringUtils.isNotBlank( response.getResponseValue( ) ) && entry.isFieldInLine( ) )
         {
             // if we use a rich text, we set the toStringValueResponse to the BBCode string
             response.setToStringValueResponse( responseValue );
         }
-		else
+        else
         {
-            response.setToStringValueResponse( EditorBbcodeService.getInstance( ).parse(responseValue) );
+            response.setToStringValueResponse( EditorBbcodeService.getInstance( ).parse( responseValue ) );
         }
-		
-        listResponse.add(response);
-        
-        return listResponse;
-	}
-	
-	/**
-	 * Builds the date response.
-	 *
-	 * @param ocrResponse the ocr response
-	 * @param entry the entry
-	 * @param referenceListField the reference list field
-	 * @param mappingFieldOcr the mapping field ocr
-	 * @return the list
-	 */
-	private static List<Response> buildDateResponse( Map<String, String> ocrResponse, Entry entry, ReferenceList referenceListField, int mappingFieldOcr) {
-		List<Response> listResponse = new ArrayList<>();
-		Response response = new Response( );
-        
-		response.setEntry( entry );
-		
-		String responseValue = ocrResponse.get(referenceListField.get(mappingFieldOcr).getName() );
 
-		Date tDateValue = DateUtil.formatDate( responseValue, Locale.getDefault() );
+        listResponse.add( response );
+
+        return listResponse;
+    }
+
+    /**
+     * Builds the date response.
+     *
+     * @param ocrResponse
+     *            the ocr response
+     * @param entry
+     *            the entry
+     * @param referenceListField
+     *            the reference list field
+     * @param mappingFieldOcr
+     *            the mapping field ocr
+     * @return the list
+     */
+    private static List<Response> buildDateResponse( Map<String, String> ocrResponse, Entry entry, ReferenceList referenceListField, int mappingFieldOcr )
+    {
+        List<Response> listResponse = new ArrayList<>( );
+        Response response = new Response( );
+
+        response.setEntry( entry );
+
+        String responseValue = ocrResponse.get( referenceListField.get( mappingFieldOcr ).getName( ) );
+
+        Date tDateValue = DateUtil.formatDate( responseValue, Locale.getDefault( ) );
 
         if ( tDateValue != null )
         {
-            response.setResponseValue( DateUtil.getDateString( tDateValue, Locale.getDefault() ) );
+            response.setResponseValue( DateUtil.getDateString( tDateValue, Locale.getDefault( ) ) );
         }
         else
         {
@@ -262,7 +303,7 @@ public class OcrProviderUtils {
 
         if ( StringUtils.isNotBlank( response.getResponseValue( ) ) )
         {
-            Date date = DateUtil.formatDate( response.getResponseValue( ), Locale.getDefault() );
+            Date date = DateUtil.formatDate( response.getResponseValue( ), Locale.getDefault( ) );
 
             if ( date != null )
             {
@@ -277,47 +318,56 @@ public class OcrProviderUtils {
         {
             response.setToStringValueResponse( StringUtils.EMPTY );
         }
-		
-		listResponse.add(response);
-        
+
+        listResponse.add( response );
+
         return listResponse;
-	}
-	
-	/**
-	 * Builds the multi field response.
-	 *
-	 * @param ocrResponse the ocr response
-	 * @param entry the entry
-	 * @param referenceListField the reference list field
-	 * @param mappingFieldOcr the mapping field ocr
-	 * @return the list
-	 */
-	private static List<Response> buildMultiFieldResponse( Map<String, String> ocrResponse, Entry entry, ReferenceList referenceListField, int mappingFieldOcr) {
-		List<Response> listResponse = new ArrayList<>();
-		Response response = new Response( );
+    }
+
+    /**
+     * Builds the multi field response.
+     *
+     * @param ocrResponse
+     *            the ocr response
+     * @param entry
+     *            the entry
+     * @param referenceListField
+     *            the reference list field
+     * @param mappingFieldOcr
+     *            the mapping field ocr
+     * @return the list
+     */
+    private static List<Response> buildMultiFieldResponse( Map<String, String> ocrResponse, Entry entry, ReferenceList referenceListField, int mappingFieldOcr )
+    {
+        List<Response> listResponse = new ArrayList<>( );
+        Response response = new Response( );
         response.setEntry( entry );
-        
-        //Check if the values match with one of fields of the entry
-        List<Field> listField = entry.getFields( ) ;
-        
-        for (Field field : listField ) {
-        	if( field.getValue().equals(ocrResponse.get(referenceListField.get(mappingFieldOcr).getName()))) {
-        		response.setResponseValue( field.getValue( ) );
+
+        // Check if the values match with one of fields of the entry
+        List<Field> listField = entry.getFields( );
+
+        for ( Field field : listField )
+        {
+            if ( field.getValue( ).equals( ocrResponse.get( referenceListField.get( mappingFieldOcr ).getName( ) ) ) )
+            {
+                response.setResponseValue( field.getValue( ) );
                 response.setField( field );
-        	}
+            }
         }
         listResponse.add( response );
-        
+
         return listResponse;
-	}
-	
-	/**
-	 * Build Json content to call OCR WS.
-	 *
-	 * @param fileUploaded            File upload for OCR
-	 * @param fileTypeKey the file type key
-	 * @return Json message
-	 */
+    }
+
+    /**
+     * Build Json content to call OCR WS.
+     *
+     * @param fileUploaded
+     *            File upload for OCR
+     * @param fileTypeKey
+     *            the file type key
+     * @return Json message
+     */
     private static JSONObject buildJsonContent( FileItem fileUploaded, String fileTypeKey )
     {
         if ( fileUploaded == null )
@@ -327,9 +377,9 @@ public class OcrProviderUtils {
 
         try
         {
-            byte[] fileContent = IOUtils.toByteArray( fileUploaded.getInputStream( ) );
+            byte [ ] fileContent = IOUtils.toByteArray( fileUploaded.getInputStream( ) );
             String strEncodedFileContent = Base64.getEncoder( ).encodeToString( fileContent );
-            String strFileExtension = fileUploaded.getContentType( ) != null ? fileUploaded.getContentType( ).split( "/" )[1]:null;
+            String strFileExtension = fileUploaded.getContentType( ) != null ? fileUploaded.getContentType( ).split( "/" ) [1] : null;
 
             JSONObject jsonObj = new JSONObject( );
             jsonObj.accumulate( "filecontent", strEncodedFileContent );
@@ -338,7 +388,8 @@ public class OcrProviderUtils {
 
             return jsonObj;
 
-        } catch ( IOException e )
+        }
+        catch( IOException e )
         {
             AppLogService.error( e.getMessage( ), e );
             return null;

@@ -32,6 +32,7 @@
  * License 1.0
  */
 package fr.paris.lutece.plugins.genericattributes.modules.ocr.business;
+
 import fr.paris.lutece.portal.service.plugin.Plugin;
 
 import java.util.List;
@@ -41,32 +42,42 @@ import java.util.List;
  */
 public interface IMappingDAO
 {
-    
+
     /**
-     * Insert  mapping object
+     * Insert mapping object
      *
-     * @param mapping the mapping
-     * @param plugin the plugin
+     * @param mapping
+     *            the mapping
+     * @param plugin
+     *            the plugin
      */
     void insert( Mapping mapping, Plugin plugin );
 
-   /**
-    * Remove mapping object line
-    * @param nIdTargetEntry The target entry id
-    * @param strResourceType The Resource type
-    * @param nIdEntry the Entry Id
-    * @param plugin the plugin
-    */
-    void delete( int nIdTargetEntry, String strResourceType,  int nIdEntry, Plugin plugin );
+    /**
+     * Remove mapping object line
+     * 
+     * @param nIdTargetEntry
+     *            The target entry id
+     * @param strResourceType
+     *            The Resource type
+     * @param nIdEntry
+     *            the Entry Id
+     * @param plugin
+     *            the plugin
+     */
+    void delete( int nIdTargetEntry, String strResourceType, int nIdEntry, Plugin plugin );
 
-   
-  /**
-   * Load object list mapped by target entry id and reource type
-   * @param nIdTargetEntry The id target entry
-   * @param strResourceType The resoruce type
-   * @param plugin the Plugin
-   * @return the list of mapping object
-   */
-    List<Mapping> loadMappingByTargetEntry( int nIdTargetEntry, String strResourceType,  Plugin plugin ) ;
-    
+    /**
+     * Load object list mapped by target entry id and reource type
+     * 
+     * @param nIdTargetEntry
+     *            The id target entry
+     * @param strResourceType
+     *            The resoruce type
+     * @param plugin
+     *            the Plugin
+     * @return the list of mapping object
+     */
+    List<Mapping> loadMappingByTargetEntry( int nIdTargetEntry, String strResourceType, Plugin plugin );
+
 }

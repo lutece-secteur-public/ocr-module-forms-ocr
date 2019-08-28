@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.genericattributes.modules.ocr.exceptions;
 
-
 /**
  *
  * Exception thrown when the Ocr call fail
@@ -73,8 +72,8 @@ public class CallOcrException extends Exception
     /**
      * Constructor
      */
-    public CallOcrException(  )
+    public CallOcrException( )
     {
-        super(  );
+        super( );
     }
 }
