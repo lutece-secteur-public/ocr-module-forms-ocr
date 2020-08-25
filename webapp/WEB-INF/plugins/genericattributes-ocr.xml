@@ -24,4 +24,15 @@
     <rbac-resource-types>
 	</rbac-resource-types>
     
+    <!-- Administration interface parameters -->
+    <admin-features>
+        <admin-feature>
+            <feature-id>MAPPING_OCR_MANAGEMENT</feature-id>
+            <feature-title>module.genericattributes.ocr.adminFeature.ocr.name</feature-title>
+            <feature-description>module.genericattributes.ocr.adminFeature.ocr.description</feature-description>
+            <feature-level>2</feature-level>
+            <feature-url>jsp/admin/plugins/genericattributes/modules/ocr/ModifyMappingOcr.jsp</feature-url>
+        </admin-feature>
+    </admin-features>
+
 </plug-in>
